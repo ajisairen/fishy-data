@@ -7,7 +7,7 @@
 <p>- Leech</p>
 <p>- Mille Lacs</p>
 <p>- Minnetonka</p>
-<p>- Vermipon</p>
+<p>- Vermilion</p>
 <p>- Winnibigoshish</p>
 
 <h2>Some Possible Factors that Effect Fish Populations:</h2>
