@@ -12,6 +12,15 @@
       { name: "Minnetonka", x: 357, y: 465 },
       { name: "Winnibigoshish", x: 320, y: 220 },
     ];
+
+    function getHexPoints(cx, cy, r) {
+        return Array.from({ length: 6 }, (_, i) => {
+            const angle = Math.PI / 3 * i;
+            const x = cx + r * Math.cos(angle);
+            const y = cy + r * Math.sin(angle);
+            return `${x},${y}`;
+        }).join(' ');
+    }
   </script>
   
   <style>
@@ -43,11 +52,9 @@
     {/if}
 
     {#each lakes as lake}
-        <circle
+        <polygon
         class="lake-hex"
-        cx={lake.x}
-        cy={lake.y}
-        r="10"
+        points={getHexPoints(lake.x, lake.y, 12)}
         on:mouseenter={() => hoveredLake = lake}
         on:mouseleave={() => hoveredLake = null}
         on:click={() => selectedLake = lake}
