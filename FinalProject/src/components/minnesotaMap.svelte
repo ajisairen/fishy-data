@@ -1,5 +1,5 @@
 <script>
-    export let selectedLake = null;
+    export let selectedLake;
     let hoveredLake = null;
   
     let lakes = [
@@ -21,11 +21,12 @@
             return `${x},${y}`;
         }).join(' ');
     }
+
+
   </script>
   
   <style>
     .lake-hex {
-      fill: rgba(20, 169, 255, 0.363);
       stroke: white;
       stroke-width: 1;
       cursor: pointer;
@@ -52,13 +53,16 @@
     {/if}
 
     {#each lakes as lake}
-        <polygon
+      <polygon
         class="lake-hex"
         points={getHexPoints(lake.x, lake.y, 12)}
         on:mouseenter={() => hoveredLake = lake}
         on:mouseleave={() => hoveredLake = null}
-        on:click={() => selectedLake = lake}
-        />
+        on:click={() => {selectedLake = lake; console.log(selectedLake.name);}}
+        fill={lake.name === selectedLake?.name
+          ? 'red'
+          : 'rgba(20, 169, 255, 0.363)'}
+      />
     {/each}
   </svg>
   
