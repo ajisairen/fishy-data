@@ -1,9 +1,26 @@
 <script>
+  import * as d3 from 'd3';
+  import { onMount } from "svelte";
   import Background from '../components/background.svelte';
   import Introduction from '../components/introduction.svelte';
   import MinnesotaMap from '../components/minnesotaMap.svelte';
   import LakeStats from '../components/lakeStats.svelte';
   let selectedLake;
+  let fishSurveyData = [];
+
+  onMount(async () => {
+    const data = await d3.csv('/fish_survey_clean.csv', row => ({
+      lake: row["Lake_Name"].trim(),
+      year: +row["Year"],
+      species: row["Species"].trim(),
+      count: +row["Total"]
+    }));
+
+    fishSurveyData = data;
+
+    console.log("Parsed Survey Data:", fishSurveyData.slice(0, 5));
+  });
+
 </script>
 
 <style>
@@ -57,7 +74,7 @@
           <MinnesotaMap bind:selectedLake />
         </div>
         <div class="stats-half">
-          <LakeStats {selectedLake} />
+          <LakeStats {selectedLake} {fishSurveyData} />
         </div>
       </div>
 </div>
