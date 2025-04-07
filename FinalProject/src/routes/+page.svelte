@@ -67,8 +67,27 @@
 <div class="title_intro">
     <h1 class="title">Factors that Influence Minnesota Fish Populations</h1>
     <div class="background-info"><Background/></div>
-    <div class="intro"><Introduction/></div>
-  
+    <div class="intro">
+      <h2>So What Factors Influence these Fish Populations?</h2>
+      <h4>To find the answer to this question we will look at 8 of the biggest lakes in Minnesota and their fish populations. These lakes are:</h4>
+      <p>- Cass</p>
+      <p>- Kabetogama</p>
+      <p>- Lake of the Woods</p>
+      <p>- Leech</p>
+      <p>- Mille Lacs</p>
+      <p>- Minnetonka</p>
+      <p>- Vermilion</p>
+      <p>- Winnibigoshish</p>
+      <h4>The factors we will look at are:</h4>
+      <p>- Climate</p>
+      <p>- Fish Stocking</p>
+      <p>- Fishing Pressure</p>
+      <p>- Invasive Species</p>
+      <p>- Predation</p>
+      <h4>These are not all the factors that can effect fish populations but these are possible strong signals and there is data available to analyze these factors. By the end of this study we should hopefully find out one or two factors that strongly influence fish populations.</h4>
+      <h2>Fish Population Overview</h2>
+      <p>Before we get started looking at the factors, please get familar with the population data from each lake using the visualization below.</p>
+    </div>
     <div class="map-box">
         <div class="map-half">
           <MinnesotaMap bind:selectedLake />
