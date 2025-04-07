@@ -23,14 +23,14 @@
   $: sampledYears = [...new Set(lakeData.map(d => d.year))].sort((a, b) => a - b);
 
   const lakeInfo = {
-    "Cass": { description: "TODO", funFact: "TODO", managementNotes: "TODO" },
-    "Kabetogama": { description: "TODO", funFact: "TODO", managementNotes: "TODO" },
-    "Lake of the Woods": { description: "TODO", funFact: "TODO", managementNotes: "TODO" },
-    "Leech": { description: "TODO", funFact: "TODO", managementNotes: "TODO" },
-    "Mille Lacs": { description: "TODO", funFact: "TODO", managementNotes: "TODO" },
-    "Vermilion": { description: "TODO", funFact: "TODO", managementNotes: "TODO" },
-    "Minnetonka": { description: "TODO", funFact: "TODO", managementNotes: "TODO" },
-    "Winnibigoshish": { description: "TODO", funFact: "TODO", managementNotes: "TODO" },
+    "Cass": { description: "Cass Lake is located in Cass County, MN. It is a 15,596 acre lake with a max depth of 120 feet. It has clearer than usual water due to zerba mussels which are an invasive species."},
+    "Kabetogama": { description: "Kabetogama Lake is located in St. Louis County, MN. It is a 24,034 acre lake with a max depth of 80 feet. Kabetogama contains a population of Saugers as it is connected to a river where they can spawn."},
+    "Lake of the Woods": { description: "TODO"},
+    "Leech": { description: "TODO"},
+    "Mille Lacs": { description: "TODO"},
+    "Vermilion": { description: "TODO" },
+    "Minnetonka": { description: "TODO"},
+    "Winnibigoshish": { description: "TODO"},
   };
 </script>
 
@@ -81,8 +81,8 @@
         {#if lakeInfo[selectedLake.name]}
           <div class="lake-description">
             <p><strong>Overview:</strong> {lakeInfo[selectedLake.name].description}</p>
-            <p><strong>Fun Fact:</strong> {lakeInfo[selectedLake.name].funFact}</p>
-            <p><strong>Management Notes:</strong> {lakeInfo[selectedLake.name].managementNotes}</p>
+            <!-- <p><strong>Fun Fact:</strong> {lakeInfo[selectedLake.name].funFact}</p>
+            <p><strong>Management Notes:</strong> {lakeInfo[selectedLake.name].managementNotes}</p> -->
           </div>
         {:else}
           <p>No description available for this lake yet.</p>

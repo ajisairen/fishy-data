@@ -58,7 +58,9 @@
         points={getHexPoints(lake.x, lake.y, 12)}
         on:mouseenter={() => hoveredLake = lake}
         on:mouseleave={() => hoveredLake = null}
-        on:click={() => {selectedLake = lake; console.log(selectedLake.name);}}
+        on:click={() => {
+          selectedLake = (selectedLake !== lake) ? lake : null;
+        }}
         fill={lake.name === selectedLake?.name
           ? 'red'
           : 'rgba(20, 169, 255, 0.363)'}
