@@ -1,0 +1,682 @@
+[
+  {
+    "year": "1993",
+    "value": 648,
+    "name": "Mud"
+  },
+  {
+    "year": "1994",
+    "value": 1286,
+    "name": "Mud"
+  },
+  {
+    "year": "1997",
+    "value": 75,
+    "name": "Minnetonka"
+  },
+  {
+    "year": "1999",
+    "value": 2711,
+    "name": "Winnibigoshish"
+  },
+  {
+    "year": "1999",
+    "value": 2151,
+    "name": "Mud"
+  },
+  {
+    "year": "2000",
+    "value": 3147,
+    "name": "Winnibigoshish"
+  },
+  {
+    "year": "2001",
+    "value": 3333,
+    "name": "Winnibigoshish"
+  },
+  {
+    "year": "2001",
+    "value": 988,
+    "name": "Mud"
+  },
+  {
+    "year": "2003",
+    "value": 2063,
+    "name": "Winnibigoshish"
+  },
+  {
+    "year": "2003",
+    "value": 1418,
+    "name": "Cass"
+  },
+  {
+    "year": "2004",
+    "value": 2378,
+    "name": "Winnibigoshish"
+  },
+  {
+    "year": "2004",
+    "value": 1554,
+    "name": "Cass"
+  },
+  {
+    "year": "2005",
+    "value": 2255,
+    "name": "Winnibigoshish"
+  },
+  {
+    "year": "2005",
+    "value": 6951,
+    "name": "Mud"
+  },
+  {
+    "year": "2006",
+    "value": 1521,
+    "name": "Leech"
+  },
+  {
+    "year": "2006",
+    "value": 2285,
+    "name": "Minnetonka"
+  },
+  {
+    "year": "2006",
+    "value": 35371,
+    "name": "Winnibigoshish"
+  },
+  {
+    "year": "2006",
+    "value": 28442,
+    "name": "Mille Lacs"
+  },
+  {
+    "year": "2006",
+    "value": 1355,
+    "name": "Cass"
+  },
+  {
+    "year": "2006",
+    "value": 36620,
+    "name": "Lake of the Woods"
+  },
+  {
+    "year": "2006",
+    "value": 694,
+    "name": "Kabetogama"
+  },
+  {
+    "year": "2007",
+    "value": 58121,
+    "name": "Leech"
+  },
+  {
+    "year": "2007",
+    "value": 52,
+    "name": "Mud"
+  },
+  {
+    "year": "2007",
+    "value": 4597,
+    "name": "Minnetonka"
+  },
+  {
+    "year": "2007",
+    "value": 3790,
+    "name": "Winnibigoshish"
+  },
+  {
+    "year": "2007",
+    "value": 27570,
+    "name": "Mille Lacs"
+  },
+  {
+    "year": "2007",
+    "value": 27226,
+    "name": "Cass"
+  },
+  {
+    "year": "2007",
+    "value": 171641,
+    "name": "Lake of the Woods"
+  },
+  {
+    "year": "2007",
+    "value": 23782,
+    "name": "Kabetogama"
+  },
+  {
+    "year": "2008",
+    "value": 86258,
+    "name": "Leech"
+  },
+  {
+    "year": "2008",
+    "value": 2940,
+    "name": "Minnetonka"
+  },
+  {
+    "year": "2008",
+    "value": 4736,
+    "name": "Winnibigoshish"
+  },
+  {
+    "year": "2008",
+    "value": 16084,
+    "name": "Mille Lacs"
+  },
+  {
+    "year": "2008",
+    "value": 35672,
+    "name": "Cass"
+  },
+  {
+    "year": "2008",
+    "value": 25545,
+    "name": "Lake of the Woods"
+  },
+  {
+    "year": "2008",
+    "value": 61042,
+    "name": "Kabetogama"
+  },
+  {
+    "year": "2009",
+    "value": 34726,
+    "name": "Leech"
+  },
+  {
+    "year": "2009",
+    "value": 1988,
+    "name": "Minnetonka"
+  },
+  {
+    "year": "2009",
+    "value": 5429,
+    "name": "Winnibigoshish"
+  },
+  {
+    "year": "2009",
+    "value": 41216,
+    "name": "Mille Lacs"
+  },
+  {
+    "year": "2009",
+    "value": 17999,
+    "name": "Cass"
+  },
+  {
+    "year": "2009",
+    "value": 36455,
+    "name": "Lake of the Woods"
+  },
+  {
+    "year": "2009",
+    "value": 43726,
+    "name": "Kabetogama"
+  },
+  {
+    "year": "2010",
+    "value": 39842,
+    "name": "Leech"
+  },
+  {
+    "year": "2010",
+    "value": 2945,
+    "name": "Minnetonka"
+  },
+  {
+    "year": "2010",
+    "value": 4281,
+    "name": "Winnibigoshish"
+  },
+  {
+    "year": "2010",
+    "value": 62422,
+    "name": "Mille Lacs"
+  },
+  {
+    "year": "2010",
+    "value": 7650,
+    "name": "Cass"
+  },
+  {
+    "year": "2010",
+    "value": 65748,
+    "name": "Lake of the Woods"
+  },
+  {
+    "year": "2010",
+    "value": 536,
+    "name": "Vermillion"
+  },
+  {
+    "year": "2010",
+    "value": 32869,
+    "name": "Kabetogama"
+  },
+  {
+    "year": "2010",
+    "value": 2943,
+    "name": "Mud"
+  },
+  {
+    "year": "2011",
+    "value": 30152,
+    "name": "Leech"
+  },
+  {
+    "year": "2011",
+    "value": 3171,
+    "name": "Minnetonka"
+  },
+  {
+    "year": "2011",
+    "value": 2223,
+    "name": "Winnibigoshish"
+  },
+  {
+    "year": "2011",
+    "value": 11823,
+    "name": "Mille Lacs"
+  },
+  {
+    "year": "2011",
+    "value": 140,
+    "name": "Mud"
+  },
+  {
+    "year": "2011",
+    "value": 26505,
+    "name": "Cass"
+  },
+  {
+    "year": "2011",
+    "value": 11143,
+    "name": "Lake of the Woods"
+  },
+  {
+    "year": "2011",
+    "value": 35159,
+    "name": "Kabetogama"
+  },
+  {
+    "year": "2012",
+    "value": 871,
+    "name": "Mud"
+  },
+  {
+    "year": "2012",
+    "value": 3583,
+    "name": "Leech"
+  },
+  {
+    "year": "2012",
+    "value": 845,
+    "name": "Minnetonka"
+  },
+  {
+    "year": "2012",
+    "value": 2611,
+    "name": "Winnibigoshish"
+  },
+  {
+    "year": "2012",
+    "value": 7725,
+    "name": "Mille Lacs"
+  },
+  {
+    "year": "2012",
+    "value": 30084,
+    "name": "Cass"
+  },
+  {
+    "year": "2012",
+    "value": 32436,
+    "name": "Lake of the Woods"
+  },
+  {
+    "year": "2012",
+    "value": 19882,
+    "name": "Kabetogama"
+  },
+  {
+    "year": "2013",
+    "value": 20221,
+    "name": "Leech"
+  },
+  {
+    "year": "2013",
+    "value": 5026,
+    "name": "Winnibigoshish"
+  },
+  {
+    "year": "2013",
+    "value": 15675,
+    "name": "Mille Lacs"
+  },
+  {
+    "year": "2013",
+    "value": 5205,
+    "name": "Cass"
+  },
+  {
+    "year": "2013",
+    "value": 18463,
+    "name": "Lake of the Woods"
+  },
+  {
+    "year": "2013",
+    "value": 8780,
+    "name": "Kabetogama"
+  },
+  {
+    "year": "2014",
+    "value": 16172,
+    "name": "Leech"
+  },
+  {
+    "year": "2014",
+    "value": 1735,
+    "name": "Minnetonka"
+  },
+  {
+    "year": "2014",
+    "value": 4226,
+    "name": "Winnibigoshish"
+  },
+  {
+    "year": "2014",
+    "value": 12781,
+    "name": "Mille Lacs"
+  },
+  {
+    "year": "2014",
+    "value": 6271,
+    "name": "Cass"
+  },
+  {
+    "year": "2014",
+    "value": 16816,
+    "name": "Lake of the Woods"
+  },
+  {
+    "year": "2014",
+    "value": 7026,
+    "name": "Kabetogama"
+  },
+  {
+    "year": "2015",
+    "value": 16362,
+    "name": "Leech"
+  },
+  {
+    "year": "2015",
+    "value": 5041,
+    "name": "Winnibigoshish"
+  },
+  {
+    "year": "2015",
+    "value": 12256,
+    "name": "Mille Lacs"
+  },
+  {
+    "year": "2015",
+    "value": 15473,
+    "name": "Cass"
+  },
+  {
+    "year": "2015",
+    "value": 27928,
+    "name": "Lake of the Woods"
+  },
+  {
+    "year": "2015",
+    "value": 3015,
+    "name": "Kabetogama"
+  },
+  {
+    "year": "2015",
+    "value": 272,
+    "name": "Mud"
+  },
+  {
+    "year": "2016",
+    "value": 29725,
+    "name": "Leech"
+  },
+  {
+    "year": "2016",
+    "value": 4134,
+    "name": "Minnetonka"
+  },
+  {
+    "year": "2016",
+    "value": 2336,
+    "name": "Winnibigoshish"
+  },
+  {
+    "year": "2016",
+    "value": 7202,
+    "name": "Mille Lacs"
+  },
+  {
+    "year": "2016",
+    "value": 3449,
+    "name": "Cass"
+  },
+  {
+    "year": "2016",
+    "value": 42091,
+    "name": "Lake of the Woods"
+  },
+  {
+    "year": "2016",
+    "value": 12254,
+    "name": "Kabetogama"
+  },
+  {
+    "year": "2017",
+    "value": 14813,
+    "name": "Winnibigoshish"
+  },
+  {
+    "year": "2017",
+    "value": 7202,
+    "name": "Mille Lacs"
+  },
+  {
+    "year": "2017",
+    "value": 4214,
+    "name": "Cass"
+  },
+  {
+    "year": "2017",
+    "value": 20713,
+    "name": "Lake of the Woods"
+  },
+  {
+    "year": "2017",
+    "value": 3892,
+    "name": "Kabetogama"
+  },
+  {
+    "year": "2018",
+    "value": 15063,
+    "name": "Leech"
+  },
+  {
+    "year": "2018",
+    "value": 2097,
+    "name": "Winnibigoshish"
+  },
+  {
+    "year": "2018",
+    "value": 5733,
+    "name": "Mille Lacs"
+  },
+  {
+    "year": "2018",
+    "value": 14745,
+    "name": "Cass"
+  },
+  {
+    "year": "2018",
+    "value": 35745,
+    "name": "Lake of the Woods"
+  },
+  {
+    "year": "2018",
+    "value": 298,
+    "name": "Vermillion"
+  },
+  {
+    "year": "2018",
+    "value": 8529,
+    "name": "Kabetogama"
+  },
+  {
+    "year": "2019",
+    "value": 530,
+    "name": "Mud"
+  },
+  {
+    "year": "2019",
+    "value": 47821,
+    "name": "Leech"
+  },
+  {
+    "year": "2019",
+    "value": 1934,
+    "name": "Minnetonka"
+  },
+  {
+    "year": "2019",
+    "value": 2085,
+    "name": "Winnibigoshish"
+  },
+  {
+    "year": "2019",
+    "value": 6437,
+    "name": "Mille Lacs"
+  },
+  {
+    "year": "2019",
+    "value": 30523,
+    "name": "Cass"
+  },
+  {
+    "year": "2019",
+    "value": 48433,
+    "name": "Lake of the Woods"
+  },
+  {
+    "year": "2019",
+    "value": 5613,
+    "name": "Kabetogama"
+  },
+  {
+    "year": "2020",
+    "value": 7062,
+    "name": "Leech"
+  },
+  {
+    "year": "2020",
+    "value": 1512,
+    "name": "Winnibigoshish"
+  },
+  {
+    "year": "2020",
+    "value": 6005,
+    "name": "Mille Lacs"
+  },
+  {
+    "year": "2020",
+    "value": 1253,
+    "name": "Cass"
+  },
+  {
+    "year": "2020",
+    "value": 6452,
+    "name": "Lake of the Woods"
+  },
+  {
+    "year": "2020",
+    "value": 5778,
+    "name": "Kabetogama"
+  },
+  {
+    "year": "2021",
+    "value": 29930,
+    "name": "Leech"
+  },
+  {
+    "year": "2021",
+    "value": 1335,
+    "name": "Winnibigoshish"
+  },
+  {
+    "year": "2021",
+    "value": 6839,
+    "name": "Mille Lacs"
+  },
+  {
+    "year": "2021",
+    "value": 1859,
+    "name": "Cass"
+  },
+  {
+    "year": "2021",
+    "value": 29898,
+    "name": "Lake of the Woods"
+  },
+  {
+    "year": "2021",
+    "value": 6778,
+    "name": "Kabetogama"
+  },
+  {
+    "year": "2022",
+    "value": 65429,
+    "name": "Leech"
+  },
+  {
+    "year": "2022",
+    "value": 4656,
+    "name": "Minnetonka"
+  },
+  {
+    "year": "2022",
+    "value": 743,
+    "name": "Winnibigoshish"
+  },
+  {
+    "year": "2022",
+    "value": 10149,
+    "name": "Mille Lacs"
+  },
+  {
+    "year": "2022",
+    "value": 2137,
+    "name": "Cass"
+  },
+  {
+    "year": "2022",
+    "value": 11446,
+    "name": "Lake of the Woods"
+  },
+  {
+    "year": "2022",
+    "value": 6230,
+    "name": "Kabetogama"
+  },
+  {
+    "year": "2023",
+    "value": 8457,
+    "name": "Winnibigoshish"
+  },
+  {
+    "year": "2023",
+    "value": 9832,
+    "name": "Kabetogama"
+  }
+]
