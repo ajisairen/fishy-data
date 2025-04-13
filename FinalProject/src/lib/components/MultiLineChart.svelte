@@ -1,7 +1,7 @@
 <script lang="ts">
   import * as d3 from 'd3';
+  import { stringify } from 'postcss';
   import { onMount } from 'svelte';
-  
   export let rawData: Record<number, Record<string, number>>;
   export let focusedSpecies: string = "";
   export let height = 500;
@@ -10,6 +10,23 @@
   let container: HTMLElement;
   let width = 800;
   
+  const fishImages: Record<string, string> = {
+    "white sucker":"/images/white_sucker.png",
+    "walleye": "/images/walleye.png",
+    "pumpkinseed": "/images/pumpkinseed.png",
+    "bluegill": "/images/bluegill.png",
+    "largemouth bass": "/images/largemouth_bass.png",
+    "yellow perch": "/images/yellow_perch.png",
+    "rock bass": "/images/rock_bass.png",
+    "tullibee (cisco)": "/images/tullibee_cisco.png",
+    "brown bullhead": "/images/brown_bullhead.png",
+    "northern pike": "/images/northern_pike.png",
+    "black crappie": "/images/black_crappie.png",
+    "yellow bullhead": "/images/yellow_bullhead.png",
+    "burbot": "/images/burbot.png",
+    "shorthead redhorse": "/images/shorthead_redhorse.png"
+  }
+
   function updateWidth() {
     if (container) {
       width = container.clientWidth;
@@ -120,6 +137,47 @@
     }
     return value.toString();
   }
+
+  // calculate major dips
+  const dipThresh = 0.95;
+  $: dips = data.map((series) => {
+    const speciesDips = [];
+    for (let i = 1; i < series.values.length; i++){
+      const prev = series.values[i-1];
+      const curr = series.values[i];
+      const drop = (prev.count - curr.count) / prev.count;
+      if (drop >= dipThresh) {
+        speciesDips.push({
+          year: curr.year,
+          count: curr.count,
+          drop,
+        })
+      }
+    } return {
+      species: series.species,
+      dip: speciesDips,
+    }
+  })
+  // calculate major spikes
+  const spikeThresh = 2.0;
+  $: spikes = data.map((series) => {
+    const speciesSpikes = [];
+    for (let i = 1; i < series.values.length; i++) {
+      const prev = series.values[i-1];
+      const curr = series.values[i];
+      const spike = (curr.count - prev.count) / prev.count;
+      if (spike >= spikeThresh) {
+        speciesSpikes.push({
+          year: curr.year,
+          count: curr.count,
+          spike,
+        })
+      }
+    } return {
+      species: series.species,
+      spike: speciesSpikes,
+    }
+  })
 </script>
 
 <div bind:this={container} class="w-full">
@@ -168,7 +226,7 @@
       {/each}
       
       <!-- Lines -->
-      {#each lines as { species, path, color, highlighted }}
+      {#each lines as { species, path, color, highlighted, lastValue }}
         <path 
           d={path} 
           fill="none" 
@@ -177,9 +235,41 @@
           opacity={highlighted || species === focusedSpecies || !focusedSpecies ? 1 : 0.2}
         />
       {/each}
-      
+      <!-- points added for changes? might just want to change later -->
+      <!-- {#each dips as { species, dip }}
+        {#if species === focusedSpecies}
+          {#each dip as { year, count }}
+            {#if count > 0}
+              <circle 
+                  cx={xScale(year)}
+                  cy={yScale(Math.max(count, useLogScale ? yMin : 0))}
+                  r="5"
+                  fill={color(species)}
+                  stroke={d3.color(color(species))?.darker(1).toString()}
+                  stroke-width={2}
+              />
+            {/if}
+          {/each}
+        {/if}
+      {/each}
+      {#each spikes as { species, spike}}
+        {#if species === focusedSpecies}
+          {#each spike as {year, count}}
+          <circle 
+          cx={xScale(year)}
+          cy={yScale(Math.max(count, useLogScale ? yMin : 0))}
+          r="5"
+          fill={color(species)}
+          stroke={d3.color(color(species))?.darker(1).toString()}
+          stroke-width={2}
+          />
+          {/each}
+        {/if}
+      {/each} -->
+
       <!-- Labels at end of line -->
       {#each lines as { species, color, lastValue, highlighted }}
+      {#if species !== focusedSpecies}
         <text
           x={xScale(lastValue.year) + 5}
           y={yScale(Math.max(lastValue.count, useLogScale ? yMin : 0))}
@@ -190,7 +280,19 @@
         >
           {species}
         </text>
-      {/each}
+      {/if}
+      <!-- add fish images based on focused species -->
+      {#if fishImages[species] && species === focusedSpecies}
+        <image
+          class="relative absolute z-10"
+          href={fishImages[species]}
+          x={xScale(lastValue.year) + 5}
+          y={yScale(Math.max(lastValue.count, useLogScale ? yMin : 0)) - 70}
+          width="100"
+          height="140"
+        />
+      {/if}
+    {/each}
     </g>
   </svg>
 </div>
@@ -201,4 +303,5 @@
     max-width: 100%;
     height: auto;
   }
+  
 </style>
