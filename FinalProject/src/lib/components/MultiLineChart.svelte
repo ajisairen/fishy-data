@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { text } from '@sveltejs/kit';
+  import { text } from '@sveltejs/kit';
   import * as d3 from 'd3';
   import { stringify } from 'postcss';
   import { onMount } from 'svelte';
@@ -7,10 +7,11 @@
   export let focusedSpecies: string = "";
   export let height = 500;
   export let useLogScale = true;
-  
+  export let isAvg = false;
+  export let setSelectedPoint;
+
   let container: HTMLElement;
   let width = 800;
-  
   const fishImages: Record<string, string> = {
     "white sucker":"/images/white_sucker.png",
     "walleye": "/images/walleye.png",
@@ -27,7 +28,6 @@
     "burbot": "/images/burbot.png",
     "shorthead redhorse": "/images/shorthead_redhorse.png"
   }
-
   function updateWidth() {
     if (container) {
       width = container.clientWidth;
@@ -85,7 +85,6 @@
     : 0;
   
   $: yMax = d3.max(data, d => d3.max(d.values, v => v.count)) || 10;
-  
   // Choose scale based on toggle
   $: yScale = useLogScale
     ? d3.scaleLog()
@@ -96,7 +95,6 @@
       .range([innerHeight, 0]);
   
   $: color = d3.scaleOrdinal(d3.schemeTableau10).domain([...allSpecies]);
-  
   // Modify line generator to handle log scale
   $: line = d3
     .line<{ year: number; count: number }>()
@@ -121,7 +119,6 @@
     lastValue: series.values[series.values.length - 1],
     highlighted: series.species === focusedSpecies
   }));
-  
   // Generate appropriate ticks
   $: xTicks = xScale.ticks(10);
   
@@ -138,7 +135,6 @@
     }
     return value.toString();
   }
-
   // calculate major dips
   const dipThresh = 0.95;
   $: dips = data.map((series) => {
@@ -265,7 +261,6 @@
           {tick}
         </text>
       {/each}
-      
       <!-- Y Axis -->
       <line x1="0" y1="0" x2="0" y2={innerHeight} stroke="black" />
       {#each yTicks as tick}
@@ -274,7 +269,6 @@
           {formatTickLabel(tick)}
         </text>
       {/each}
-      
       <!-- Grid lines for better readability -->
       {#each yTicks as tick}
         <line 
@@ -286,7 +280,6 @@
           stroke-dasharray="2,2" 
         />
       {/each}
-      
       <!-- Lines -->
       {#each lines as { species, path, color, highlighted, lastValue }}
         <path 
@@ -355,6 +348,50 @@
           />
         {/if}
       {/each}
+      {#each lines as { species, color, lastValue, highlighted }}
+        <text
+          x={xScale(lastValue.year) + 5}
+          y={yScale(Math.max(lastValue.count, useLogScale ? yMin : 0))}
+          fill={color}
+          alignment-baseline="middle"
+          font-weight={highlighted || species === focusedSpecies ? "bold" : "normal"}
+          font-size={highlighted || species === focusedSpecies ? "12px" : "10px"}
+        >
+          {species}
+        </text>
+      {/each}
+
+    <text 
+      x={innerWidth / 2} 
+      y={innerHeight + 36} 
+      text-anchor="middle"
+      font-weight="bold"
+    >
+      Year
+    </text>
+
+    <text 
+      transform={`translate(-45, ${innerHeight / 2}) rotate(-90)`} 
+      text-anchor="middle"
+      font-weight="bold"
+    >
+      Survey Population Count
+    </text>
+
+    {#if isAvg}
+        <circle cx={xScale(2007)} cy={yScale(rawData["2007"]["Weighted Average"])} 
+            r={7} fill="steelblue" 
+            class="cursor-pointer"
+            onclick={() => setSelectedPoint(2007)}
+            style="z-index: 100;"
+        />
+        <circle cx={xScale(2020)} cy={yScale(rawData["2020"]["Weighted Average"])} 
+            r={7} fill="steelblue"
+            class="cursor-pointer"
+            onclick={() => setSelectedPoint(2020)}
+            style="z-index: 100;"
+        />
+    {/if}
     </g>
   </svg>
 </div>
@@ -365,5 +402,4 @@
     max-width: 100%;
     height: auto;
   }
-  
 </style>

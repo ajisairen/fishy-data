@@ -1,0 +1,104 @@
+{
+  "brown bullhead": {
+    "Leech": 6,
+    "Minnetonka": 40,
+    "Lake of the Woods": 82
+  },
+  "yellow perch": {
+    "Leech": 20825,
+    "Minnetonka": 77,
+    "Winnibigoshish": 105,
+    "Mille Lacs": 7010,
+    "Cass": 979,
+    "Lake of the Woods": 4048,
+    "Kabetogama": 5504
+  },
+  "burbot": {
+    "Leech": 1,
+    "Winnibigoshish": 3,
+    "Mille Lacs": 5,
+    "Cass": 1,
+    "Lake of the Woods": 5,
+    "Kabetogama": 2
+  },
+  "yellow bullhead": {
+    "Leech": 41,
+    "Minnetonka": 305,
+    "Cass": 9
+  },
+  "northern pike": {
+    "Leech": 120,
+    "Minnetonka": 295,
+    "Winnibigoshish": 60,
+    "Mille Lacs": 429,
+    "Cass": 759,
+    "Lake of the Woods": 601,
+    "Kabetogama": 91
+  },
+  "rock bass": {
+    "Leech": 57,
+    "Minnetonka": 146,
+    "Mille Lacs": 58,
+    "Cass": 24,
+    "Lake of the Woods": 3,
+    "Kabetogama": 28
+  },
+  "walleye": {
+    "Leech": 360,
+    "Minnetonka": 66,
+    "Winnibigoshish": 529,
+    "Mille Lacs": 1496,
+    "Cass": 232,
+    "Lake of the Woods": 1104,
+    "Kabetogama": 280
+  },
+  "largemouth bass": {
+    "Leech": 226,
+    "Minnetonka": 10,
+    "Winnibigoshish": 1,
+    "Mille Lacs": 54
+  },
+  "pumpkinseed": {
+    "Leech": 69,
+    "Minnetonka": 169,
+    "Mille Lacs": 1,
+    "Cass": 1,
+    "Lake of the Woods": 8,
+    "Kabetogama": 1
+  },
+  "bluegill": {
+    "Leech": 724,
+    "Minnetonka": 2970,
+    "Mille Lacs": 6,
+    "Cass": 4,
+    "Kabetogama": 2
+  },
+  "tullibee (cisco)": {
+    "Leech": 32,
+    "Winnibigoshish": 10,
+    "Mille Lacs": 435,
+    "Cass": 98,
+    "Lake of the Woods": 787
+  },
+  "black crappie": {
+    "Leech": 112,
+    "Minnetonka": 117,
+    "Mille Lacs": 14,
+    "Lake of the Woods": 38,
+    "Kabetogama": 139
+  },
+  "white sucker": {
+    "Leech": 423,
+    "Minnetonka": 1,
+    "Winnibigoshish": 32,
+    "Mille Lacs": 50,
+    "Cass": 27,
+    "Lake of the Woods": 251,
+    "Kabetogama": 42
+  },
+  "shorthead redhorse": {
+    "Winnibigoshish": 3,
+    "Mille Lacs": 1,
+    "Lake of the Woods": 60
+  }
+}
