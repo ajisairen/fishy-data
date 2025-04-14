@@ -149,7 +149,7 @@
 <div id="containerIntro" class="h-[200vh] w-[100vw]">
     <div id="subbox" class="fixed flex flex-col left-8 bottom-8 border bg-none rounded-md border-gray-400 h-[50vh] w-[20vw] { !showSideSpecies ? 'opacity-0 -z-40' : 'opacity-100 z-0'}">
         {#each fish as _fish, idx}
-            <button onclick={() => document.getElementById(`container${idx}`).scrollIntoView({ behavior: 'smooth' })} class="cursor-pointer fishbox w-full h-full text-sm flex px-8 items-center transition-all duration-300 ease-in-out {idx !== fish.length-1 ? 'border-b border-gray-400' : ''} {curFish===_fish ? 'bg-black text-[#faf9f6] px-[4rem]' : 'bg-none text-black'}"> {_fish}
+            <button onclick={() => document.getElementById(`container${idx}`).scrollIntoView({ behavior: 'smooth' })} class="cursor-pointer fishbox w-full h-full text-sm flex px-8 items-center transition-all duration-300 ease-in-out {idx !== fish.length-1 ? 'border-b border-gray-400' : ''} {curFish===_fish ? 'bg-black text-[#faf9f6] px-[4rem]' : 'bg-none text-black'}"> {_fish[0].toUpperCase() + _fish.slice(1)}
             </button>
         {/each}
     </div>
