@@ -7,8 +7,6 @@ export let rawData: Record<number, Record<string, number>>;
 export let focusedSpecies: string = "";
 export let height = 500;
 export let useLogScale = true;
-export let isAvg = false;
-export let setSelectedPoint;
 
 let container: HTMLElement;
 let width = 800;
@@ -129,7 +127,7 @@ $: xTicks = xScale.ticks(10);
 
 // Generate appropriate y-axis ticks based on scale type
 $: yTicks = useLogScale 
-  ? yScale.ticks(4).filter((t: any) => t > 0) 
+  ? yScale.ticks(4).filter(t => t > 0) 
   : yScale.ticks(5);
   
 // Format tick labels
@@ -357,38 +355,6 @@ $: labelPositions = (() => {
         />
       {/if}
     {/each}
-
-    <text 
-      x={innerWidth / 2} 
-      y={innerHeight + 36} 
-      text-anchor="middle"
-      font-weight="bold"
-    >
-      Year
-    </text>
-
-    <text 
-      transform={`translate(-45, ${innerHeight / 2}) rotate(-90)`} 
-      text-anchor="middle"
-      font-weight="bold"
-    >
-      Survey Population Count
-    </text>
-
-    {#if isAvg}
-        <circle cx={xScale(2007)} cy={yScale(rawData["2007"]["Weighted Average"])} 
-            r={7} fill="steelblue" 
-            class="cursor-pointer"
-            onclick={() => setSelectedPoint(2007)}
-            style="z-index: 100;"
-        />
-        <circle cx={xScale(2020)} cy={yScale(rawData["2020"]["Weighted Average"])} 
-            r={7} fill="steelblue"
-            class="cursor-pointer"
-            onclick={() => setSelectedPoint(2020)}
-            style="z-index: 100;"
-        />
-    {/if}
   </g>
 </svg>
 </div>
