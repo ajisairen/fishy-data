@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { text } from '@sveltejs/kit';
   import * as d3 from 'd3';
   import { stringify } from 'postcss';
   import { onMount } from 'svelte';
@@ -183,6 +184,7 @@
   $: labelPositions = (() => {
     // Initialize vars
     const positions: Record<string, number> = {};
+    const usedPositions: number[][] = [];
     const imageHeight = 57;
     const imageYOffset = imageHeight / 2;
     let imageY;
@@ -191,32 +193,41 @@
     const focusedLine = lines.find(l => l.species === focusedSpecies);
     if (focusedLine) {
       imageY = yScale(Math.max(focusedLine.lastValue.count, useLogScale ? yMin : 0)) - imageYOffset;
+      usedPositions.push([imageY, imageY + imageHeight]);
     }
 
     // Calculate y position of each label
     for (const {species, lastValue} of lines) {
       let y;
+      const textSize = 12;
+      const textOffset = textSize / 2;
 
       // Not focused species, calculate y position for text label
       if (species !== focusedSpecies) {
         // Calculate default label position
         y = yScale(Math.max(lastValue.count, useLogScale ? yMin : 0));
 
-        // Check if label overlaps with image
-        if (imageY) {
-          const imageMiddleY = imageY + imageHeight / 2;
-          const imageBottomY = imageY + imageHeight;
-          const textOffset = 8;
+        let i = 0;
+        while (i < usedPositions.length) {
+          const pos: number[] = usedPositions[i];
+          const middlePos = pos[0] + (pos[1] - pos[0]);
 
-          // Move label up if in upper half of image
-          if (y >= imageY && y <= imageMiddleY) {
-            y = imageY - textOffset;
+          if (y >= pos[0] && y < middlePos) {
+            y = pos[0] - textOffset;
+            i = 0;
           }
-          // Move label down if in lower half of image
-          else if (y >= imageMiddleY && y <= imageBottomY) {
-            y = imageBottomY + textOffset;
+          else if (y >= middlePos && y <= pos[1]) {
+            y = pos[1] + textOffset;
+            i = 0;
+          }
+          else {
+            i++;
           }
         }
+
+        const yTop = y - textOffset;
+        const yBottom = y + textOffset;
+        usedPositions.push([yTop, yBottom]);
       }
       // Is focused species, set y to position for image label
       else {
