@@ -24,7 +24,7 @@ jobs:
 
       - name: build
         env:
-           BASE_PATH: '/fishy-data'
+           BASE_PATH: '/FinalProject'
         run: npm run build
 
       - name: Upload Artifacts
