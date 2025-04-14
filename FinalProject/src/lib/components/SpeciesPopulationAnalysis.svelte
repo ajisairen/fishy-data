@@ -157,7 +157,7 @@
         <div class="font-semibold text-start" style="font-size: 6em;">
             <!-- Why are fish populations falling? -->
             <!-- What makes a species popular to fish? -->
-            The guidebook to Minnesotan fishing and species population patterns
+            The Guidebook to Minnesotan Fishing and Species Population Patterns
         </div>
     </div>
     <div id="descContainer" class="flex flex-col justify-start items-start border-l border-l-gray-400 gap-y-8 px-8 py-8 h-[calc(50vh+4rem)] w-[calc(80vw-4rem)] left-[calc(20vw+4rem)] fixed { !showSideSpecies ? 'opacity-0 -z-40' : 'opacity-100 z-0'}">
