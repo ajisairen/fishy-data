@@ -227,10 +227,28 @@ function calculateAverageLakeSurveyCountDiff(surveys) {
 
 async function buildViolinDataset(surveys) {
     const fishRecords = {}; // year -> records of fish, their size and lake found in
-    for (const survey of surveys) {
-        const { year, lake_name, size1Count, size2Count, size3Count, size4Count, size5Count, size6Count, size7Count, size8Count, size9Count, size10Count, size11Count, size12Count, size13Count } = survey;
 
-        if (year < 1999) continue;
+    const fish = new Set([
+        'white sucker',
+        'walleye',
+        'pumpkinseed',
+        'bluegill',
+        'largemouth bass',
+        'yellow perch',
+        'rock bass',
+        'tullibee (cisco)',
+        'brown bullhead',
+        'northern pike',
+        'black crappie',
+        'yellow bullhead',
+        'burbot',
+        'shorthead redhorse'
+    ]);
+
+    for (const survey of surveys) {
+        const { year, lake_name, species, size1Count, size2Count, size3Count, size4Count, size5Count, size6Count, size7Count, size8Count, size9Count, size10Count, size11Count, size12Count, size13Count } = survey;
+
+        if (year < 1999 || !fish.has(species)) continue;
         if (!fishRecords[year]) {
             fishRecords[year] = [];
         }
@@ -318,5 +336,5 @@ const surveys = await readSurveys();
 // const speciesPopulationByYear = await generateSpeciesPopulationTimeJson(surveys);
 // await generateLakePopulationOverTime(surveys);
 // calculateAverageLakeSurveyCountDiff(surveys);
-// await buildViolinDataset(surveys);
+await buildViolinDataset(surveys);
 await buildSpeciesToLakeComposition(surveys);
