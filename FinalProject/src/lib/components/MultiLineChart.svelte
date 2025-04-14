@@ -183,33 +183,47 @@
   $: labelPositions = (() => {
     // Initialize vars
     const positions: Record<string, number> = {};
-    const imageHeight = 60;
+    const imageHeight = 57;
     const imageYOffset = imageHeight / 2;
     let imageY;
-    let imageBottomY;
 
-    // Calculate y position of the focused species' image label
+    // Calculate y position of focused species' image label
     const focusedLine = lines.find(l => l.species === focusedSpecies);
     if (focusedLine) {
       imageY = yScale(Math.max(focusedLine.lastValue.count, useLogScale ? yMin : 0)) - imageYOffset;
-      imageBottomY = imageY + imageHeight;
     }
 
-    // Calculate the y position of each label
+    // Calculate y position of each label
     for (const {species, lastValue} of lines) {
       let y;
-      // Not the focused species, calculate y position for the text label
+
+      // Not focused species, calculate y position for text label
       if (species !== focusedSpecies) {
+        // Calculate default label position
         y = yScale(Math.max(lastValue.count, useLogScale ? yMin : 0));
-        if (imageY && imageBottomY && (y >= imageY && y <= imageBottomY)) {
-          y = imageY - 8;
+
+        // Check if label overlaps with image
+        if (imageY) {
+          const imageMiddleY = imageY + imageHeight / 2;
+          const imageBottomY = imageY + imageHeight;
+          const textOffset = 8;
+
+          // Move label up if in upper half of image
+          if (y >= imageY && y <= imageMiddleY) {
+            y = imageY - textOffset;
+          }
+          // Move label down if in lower half of image
+          else if (y >= imageMiddleY && y <= imageBottomY) {
+            y = imageBottomY + textOffset;
+          }
         }
       }
-      // Is the focused species, calculate y position for image label
+      // Is focused species, set y to position for image label
       else {
         y = imageY;
       }
 
+      // Store y position for species
       positions[species] = y;
     }
 
@@ -326,7 +340,7 @@
             x={xScale(lastValue.year) + 5}
             y={labelPositions[species]}
             width="100"
-            height="60"
+            height="57"
           />
         {/if}
       {/each}
