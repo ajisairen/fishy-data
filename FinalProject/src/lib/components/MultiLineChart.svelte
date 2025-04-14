@@ -6,6 +6,8 @@
   export let focusedSpecies: string = "";
   export let height = 500;
   export let useLogScale = true;
+  export let isAvg = false;
+  export let setSelectedPoint;
   
   let container: HTMLElement;
   let width = 800;
@@ -68,7 +70,6 @@
   
   $: yMax = d3.max(data, d => d3.max(d.values, v => v.count)) || 10;
   
-  // Choose scale based on toggle
   $: yScale = useLogScale
     ? d3.scaleLog()
       .domain([yMin, yMax])
@@ -79,19 +80,16 @@
   
   $: color = d3.scaleOrdinal(d3.schemeTableau10).domain([...allSpecies]);
   
-  // Modify line generator to handle log scale
   $: line = d3
     .line<{ year: number; count: number }>()
     .x(d => xScale(d.year))
     .y(d => {
-      // For log scale, ensure we never try to plot a zero value
       const value = useLogScale 
         ? Math.max(d.count, yMin) 
         : d.count;
       return yScale(value);
     })
     .defined(d => {
-      // Skip drawing line segments for zero values when using log scale
       return !useLogScale || d.count > 0;
     })
     .curve(d3.curveMonotoneX);
@@ -104,12 +102,10 @@
     highlighted: series.species === focusedSpecies
   }));
   
-  // Generate appropriate ticks
   $: xTicks = xScale.ticks(10);
   
-  // Generate appropriate y-axis ticks based on scale type
   $: yTicks = useLogScale 
-    ? yScale.ticks(4).filter(t => t > 0) 
+    ? yScale.ticks(4).filter((t: any) => t > 0) 
     : yScale.ticks(5);
     
   // Format tick labels
@@ -131,7 +127,6 @@
     class="w-full font-sans text-sm"
   >
     <g transform={`translate(${margin.left},${margin.top})`}>
-      <!-- X Axis -->
       <line x1="0" y1={innerHeight} x2={innerWidth} y2={innerHeight} stroke="black" />
       {#each xTicks as tick}
         <line
@@ -146,7 +141,6 @@
         </text>
       {/each}
       
-      <!-- Y Axis -->
       <line x1="0" y1="0" x2="0" y2={innerHeight} stroke="black" />
       {#each yTicks as tick}
         <line x1="-6" y1={yScale(tick)} x2="0" y2={yScale(tick)} stroke="black" />
@@ -155,7 +149,6 @@
         </text>
       {/each}
       
-      <!-- Grid lines for better readability -->
       {#each yTicks as tick}
         <line 
           x1="0" 
@@ -167,7 +160,6 @@
         />
       {/each}
       
-      <!-- Lines -->
       {#each lines as { species, path, color, highlighted }}
         <path 
           d={path} 
@@ -178,7 +170,6 @@
         />
       {/each}
       
-      <!-- Labels at end of line -->
       {#each lines as { species, color, lastValue, highlighted }}
         <text
           x={xScale(lastValue.year) + 5}
@@ -191,6 +182,39 @@
           {species}
         </text>
       {/each}
+
+    <text 
+      x={innerWidth / 2} 
+      y={innerHeight + 36} 
+      text-anchor="middle"
+      font-weight="bold"
+    >
+      Year
+    </text>
+
+    <text 
+      transform={`translate(-45, ${innerHeight / 2}) rotate(-90)`} 
+      text-anchor="middle"
+      font-weight="bold"
+    >
+      Survey Population Count
+    </text>
+
+    {#if isAvg}
+        <circle cx={xScale(2007)} cy={yScale(rawData["2007"]["Weighted Average"])} 
+            r={7} fill="steelblue" 
+            class="cursor-pointer"
+            onclick={() => setSelectedPoint(2007)}
+            style="z-index: 100;"
+        />
+        <circle cx={xScale(2020)} cy={yScale(rawData["2020"]["Weighted Average"])} 
+            r={7} fill="steelblue"
+            class="cursor-pointer"
+            onclick={() => setSelectedPoint(2020)}
+            style="z-index: 100;"
+        />
+    {/if}
+
     </g>
   </svg>
 </div>

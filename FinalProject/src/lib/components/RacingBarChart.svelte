@@ -22,7 +22,7 @@
 	};
 
 	// Configuration
-	const width = 1200;
+	const width = 1000;
 	const barSize = 64;
 	const marginTop = 16;
 	const marginRight = 120;
