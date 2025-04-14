@@ -1,9 +1,11 @@
 <script>
 	import { onMount, onDestroy } from 'svelte';
 	import * as d3 from 'd3';
-    import fishDataByYear from "$lib/fish_size_violin_data.json";
+    // import fishDataByYear from "$lib/fish_size_violin_data.json";
 
-	export let selectedYear = 2023;
+    import surveys from "$lib/trusted_filtered_surveys.json";
+    const fishDataByYear = buildViolinDataset(surveys);
+	export let selectedYear = 2022;
     const allYears = Object.keys(fishDataByYear).map(Number).sort((a, b) => a - b);
 	const minYear = allYears[0];
 	const maxYear = allYears[allYears.length - 1];
@@ -11,6 +13,47 @@
 	let container;
 
 	let resizeObserver;
+
+    function buildViolinDataset(surveys) {
+        const fishRecords = {}; // year -> records of fish, their size and lake found in
+
+        const fish = new Set([
+            'white sucker',
+            'walleye',
+            'pumpkinseed',
+            'bluegill',
+            'largemouth bass',
+            'yellow perch',
+            'rock bass',
+            'tullibee (cisco)',
+            'brown bullhead',
+            'northern pike',
+            'black crappie',
+            'yellow bullhead',
+            'burbot',
+            'shorthead redhorse'
+        ]);
+
+        for (const survey of surveys) {
+            const { year, lake_name, species, size1Count, size2Count, size3Count, size4Count, size5Count, size6Count, size7Count, size8Count, size9Count, size10Count, size11Count, size12Count, size13Count } = survey;
+
+            if (year < 1999 || !fish.has(species)) continue;
+            if (!fishRecords[year]) {
+                fishRecords[year] = [];
+            }
+
+            const counts = [size1Count, size2Count, size3Count, size4Count, size5Count, size6Count, size7Count, size8Count, size9Count, size10Count, size11Count, size12Count, size13Count];
+            const sizes = [2.5, 6.5, 8.5, 10.5, 13, 17, 22, 27, 33, 37, 42, 47, 50];
+            for (let i = 0; i < counts.length; i++) {
+                const size = sizes[i];
+                for (let j = 0; j < counts[i]; j++) {
+                    fishRecords[year].push({ "lake": lake_name, "size": size });
+                }
+            }
+        }
+
+        return fishRecords;
+    }
 
 	function drawChart(containerWidth, containerHeight) {
 		const margin = { top: 10, right: 30, bottom: 30, left: 40 };
