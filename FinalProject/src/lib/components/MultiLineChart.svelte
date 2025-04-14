@@ -178,6 +178,43 @@
       spike: speciesSpikes,
     }
   })
+
+  // Calculate label positions
+  $: labelPositions = (() => {
+    // Initialize vars
+    const positions: Record<string, number> = {};
+    const imageHeight = 60;
+    const imageYOffset = imageHeight / 2;
+    let imageY;
+    let imageBottomY;
+
+    // Calculate y position of the focused species' image label
+    const focusedLine = lines.find(l => l.species === focusedSpecies);
+    if (focusedLine) {
+      imageY = yScale(Math.max(focusedLine.lastValue.count, useLogScale ? yMin : 0)) - imageYOffset;
+      imageBottomY = imageY + imageHeight;
+    }
+
+    // Calculate the y position of each label
+    for (const {species, lastValue} of lines) {
+      let y;
+      // Not the focused species, calculate y position for the text label
+      if (species !== focusedSpecies) {
+        y = yScale(Math.max(lastValue.count, useLogScale ? yMin : 0));
+        if (imageY && imageBottomY && (y >= imageY && y <= imageBottomY)) {
+          y = imageY - 8;
+        }
+      }
+      // Is the focused species, calculate y position for image label
+      else {
+        y = imageY;
+      }
+
+      positions[species] = y;
+    }
+
+    return positions;
+  })();
 </script>
 
 <div bind:this={container} class="w-full">
@@ -269,30 +306,30 @@
 
       <!-- Labels at end of line -->
       {#each lines as { species, color, lastValue, highlighted }}
-      {#if species !== focusedSpecies}
-        <text
-          x={xScale(lastValue.year) + 5}
-          y={yScale(Math.max(lastValue.count, useLogScale ? yMin : 0))}
-          fill={color}
-          alignment-baseline="middle"
-          font-weight={highlighted || species === focusedSpecies ? "bold" : "normal"}
-          font-size={highlighted || species === focusedSpecies ? "12px" : "10px"}
-        >
-          {species}
-        </text>
-      {/if}
-      <!-- add fish images based on focused species -->
-      {#if fishImages[species] && species === focusedSpecies}
-        <image
-          class="relative absolute z-10"
-          href={fishImages[species]}
-          x={xScale(lastValue.year) + 5}
-          y={yScale(Math.max(lastValue.count, useLogScale ? yMin : 0)) - 70}
-          width="100"
-          height="140"
-        />
-      {/if}
-    {/each}
+        {#if species !== focusedSpecies}
+          <text
+            x={xScale(lastValue.year) + 5}
+            y={labelPositions[species]}
+            fill={color}
+            alignment-baseline="middle"
+            font-weight={highlighted || species === focusedSpecies ? "bold" : "normal"}
+            font-size={highlighted || species === focusedSpecies ? "12px" : "10px"}
+          >
+            {species}
+          </text>
+        {/if}
+        <!-- add fish images based on focused species -->
+        {#if fishImages[species] && species === focusedSpecies}
+          <image
+            class="relative absolute z-10"
+            href={fishImages[species]}
+            x={xScale(lastValue.year) + 5}
+            y={labelPositions[species]}
+            width="100"
+            height="60"
+          />
+        {/if}
+      {/each}
     </g>
   </svg>
 </div>
