@@ -1,17 +1,33 @@
 <script lang="ts">
+  import { text } from '@sveltejs/kit';
   import * as d3 from 'd3';
+  import { stringify } from 'postcss';
   import { onMount } from 'svelte';
-  
   export let rawData: Record<number, Record<string, number>>;
   export let focusedSpecies: string = "";
   export let height = 500;
   export let useLogScale = true;
   export let isAvg = false;
   export let setSelectedPoint;
-  
+
   let container: HTMLElement;
   let width = 800;
-  
+  const fishImages: Record<string, string> = {
+    "white sucker":"/images/white_sucker.png",
+    "walleye": "/images/walleye.png",
+    "pumpkinseed": "/images/pumpkinseed.png",
+    "bluegill": "/images/bluegill.png",
+    "largemouth bass": "/images/largemouth_bass.png",
+    "yellow perch": "/images/yellow_perch.png",
+    "rock bass": "/images/rock_bass.png",
+    "tullibee (cisco)": "/images/tullibee_cisco.png",
+    "brown bullhead": "/images/brown_bullhead.png",
+    "northern pike": "/images/northern_pike.png",
+    "black crappie": "/images/black_crappie.png",
+    "yellow bullhead": "/images/yellow_bullhead.png",
+    "burbot": "/images/burbot.png",
+    "shorthead redhorse": "/images/shorthead_redhorse.png"
+  }
   function updateWidth() {
     if (container) {
       width = container.clientWidth;
@@ -69,7 +85,7 @@
     : 0;
   
   $: yMax = d3.max(data, d => d3.max(d.values, v => v.count)) || 10;
-  
+  // Choose scale based on toggle
   $: yScale = useLogScale
     ? d3.scaleLog()
       .domain([yMin, yMax])
@@ -79,17 +95,19 @@
       .range([innerHeight, 0]);
   
   $: color = d3.scaleOrdinal(d3.schemeTableau10).domain([...allSpecies]);
-  
+  // Modify line generator to handle log scale
   $: line = d3
     .line<{ year: number; count: number }>()
     .x(d => xScale(d.year))
     .y(d => {
+      // For log scale, ensure we never try to plot a zero value
       const value = useLogScale 
         ? Math.max(d.count, yMin) 
         : d.count;
       return yScale(value);
     })
     .defined(d => {
+      // Skip drawing line segments for zero values when using log scale
       return !useLogScale || d.count > 0;
     })
     .curve(d3.curveMonotoneX);
@@ -101,11 +119,12 @@
     lastValue: series.values[series.values.length - 1],
     highlighted: series.species === focusedSpecies
   }));
-  
+  // Generate appropriate ticks
   $: xTicks = xScale.ticks(10);
   
+  // Generate appropriate y-axis ticks based on scale type
   $: yTicks = useLogScale 
-    ? yScale.ticks(4).filter((t: any) => t > 0) 
+    ? yScale.ticks(4).filter(t => t > 0) 
     : yScale.ticks(5);
     
   // Format tick labels
@@ -116,6 +135,107 @@
     }
     return value.toString();
   }
+  // calculate major dips
+  const dipThresh = 0.95;
+  $: dips = data.map((series) => {
+    const speciesDips = [];
+    for (let i = 1; i < series.values.length; i++){
+      const prev = series.values[i-1];
+      const curr = series.values[i];
+      const drop = (prev.count - curr.count) / prev.count;
+      if (drop >= dipThresh) {
+        speciesDips.push({
+          year: curr.year,
+          count: curr.count,
+          drop,
+        })
+      }
+    } return {
+      species: series.species,
+      dip: speciesDips,
+    }
+  })
+  // calculate major spikes
+  const spikeThresh = 2.0;
+  $: spikes = data.map((series) => {
+    const speciesSpikes = [];
+    for (let i = 1; i < series.values.length; i++) {
+      const prev = series.values[i-1];
+      const curr = series.values[i];
+      const spike = (curr.count - prev.count) / prev.count;
+      if (spike >= spikeThresh) {
+        speciesSpikes.push({
+          year: curr.year,
+          count: curr.count,
+          spike,
+        })
+      }
+    } return {
+      species: series.species,
+      spike: speciesSpikes,
+    }
+  })
+
+  // Calculate label positions
+  $: labelPositions = (() => {
+    // Initialize vars
+    const positions: Record<string, number> = {};
+    const usedPositions: number[][] = [];
+    const imageHeight = 57;
+    const imageYOffset = imageHeight / 2;
+    let imageY;
+
+    // Calculate y position of focused species' image label
+    const focusedLine = lines.find(l => l.species === focusedSpecies);
+    if (focusedLine) {
+      imageY = yScale(Math.max(focusedLine.lastValue.count, useLogScale ? yMin : 0)) - imageYOffset;
+      usedPositions.push([imageY, imageY + imageHeight]);
+    }
+
+    // Calculate y position of each label
+    for (const {species, lastValue} of lines) {
+      let y;
+      const textSize = 12;
+      const textOffset = textSize / 2;
+
+      // Not focused species, calculate y position for text label
+      if (species !== focusedSpecies) {
+        // Calculate default label position
+        y = yScale(Math.max(lastValue.count, useLogScale ? yMin : 0));
+
+        let i = 0;
+        while (i < usedPositions.length) {
+          const pos: number[] = usedPositions[i];
+          const middlePos = pos[0] + (pos[1] - pos[0]);
+
+          if (y >= pos[0] && y < middlePos) {
+            y = pos[0] - textOffset;
+            i = 0;
+          }
+          else if (y >= middlePos && y <= pos[1]) {
+            y = pos[1] + textOffset;
+            i = 0;
+          }
+          else {
+            i++;
+          }
+        }
+
+        const yTop = y - textOffset;
+        const yBottom = y + textOffset;
+        usedPositions.push([yTop, yBottom]);
+      }
+      // Is focused species, set y to position for image label
+      else {
+        y = imageY;
+      }
+
+      // Store y position for species
+      positions[species] = y;
+    }
+
+    return positions;
+  })();
 </script>
 
 <div bind:this={container} class="w-full">
@@ -127,6 +247,7 @@
     class="w-full font-sans text-sm"
   >
     <g transform={`translate(${margin.left},${margin.top})`}>
+      <!-- X Axis -->
       <line x1="0" y1={innerHeight} x2={innerWidth} y2={innerHeight} stroke="black" />
       {#each xTicks as tick}
         <line
@@ -140,7 +261,7 @@
           {tick}
         </text>
       {/each}
-      
+      <!-- Y Axis -->
       <line x1="0" y1="0" x2="0" y2={innerHeight} stroke="black" />
       {#each yTicks as tick}
         <line x1="-6" y1={yScale(tick)} x2="0" y2={yScale(tick)} stroke="black" />
@@ -148,7 +269,7 @@
           {formatTickLabel(tick)}
         </text>
       {/each}
-      
+      <!-- Grid lines for better readability -->
       {#each yTicks as tick}
         <line 
           x1="0" 
@@ -159,8 +280,8 @@
           stroke-dasharray="2,2" 
         />
       {/each}
-      
-      {#each lines as { species, path, color, highlighted }}
+      <!-- Lines -->
+      {#each lines as { species, path, color, highlighted, lastValue }}
         <path 
           d={path} 
           fill="none" 
@@ -169,7 +290,64 @@
           opacity={highlighted || species === focusedSpecies || !focusedSpecies ? 1 : 0.2}
         />
       {/each}
-      
+      <!-- points added for changes? might just want to change later -->
+      <!-- {#each dips as { species, dip }}
+        {#if species === focusedSpecies}
+          {#each dip as { year, count }}
+            {#if count > 0}
+              <circle 
+                  cx={xScale(year)}
+                  cy={yScale(Math.max(count, useLogScale ? yMin : 0))}
+                  r="5"
+                  fill={color(species)}
+                  stroke={d3.color(color(species))?.darker(1).toString()}
+                  stroke-width={2}
+              />
+            {/if}
+          {/each}
+        {/if}
+      {/each}
+      {#each spikes as { species, spike}}
+        {#if species === focusedSpecies}
+          {#each spike as {year, count}}
+          <circle 
+          cx={xScale(year)}
+          cy={yScale(Math.max(count, useLogScale ? yMin : 0))}
+          r="5"
+          fill={color(species)}
+          stroke={d3.color(color(species))?.darker(1).toString()}
+          stroke-width={2}
+          />
+          {/each}
+        {/if}
+      {/each} -->
+
+      <!-- Labels at end of line -->
+      {#each lines as { species, color, lastValue, highlighted }}
+        {#if species !== focusedSpecies}
+          <text
+            x={xScale(lastValue.year) + 5}
+            y={labelPositions[species]}
+            fill={color}
+            alignment-baseline="middle"
+            font-weight={highlighted || species === focusedSpecies ? "bold" : "normal"}
+            font-size={highlighted || species === focusedSpecies ? "12px" : "10px"}
+          >
+            {species}
+          </text>
+        {/if}
+        <!-- add fish images based on focused species -->
+        {#if fishImages[species] && species === focusedSpecies}
+          <image
+            class="relative absolute z-10"
+            href={fishImages[species]}
+            x={xScale(lastValue.year) + 5}
+            y={labelPositions[species]}
+            width="100"
+            height="57"
+          />
+        {/if}
+      {/each}
       {#each lines as { species, color, lastValue, highlighted }}
         <text
           x={xScale(lastValue.year) + 5}
@@ -214,7 +392,6 @@
             style="z-index: 100;"
         />
     {/if}
-
     </g>
   </svg>
 </div>
