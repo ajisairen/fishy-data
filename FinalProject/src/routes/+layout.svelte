@@ -1,6 +1,16 @@
 <script lang="ts">
 	import '../app.css';
+	import { startBubbleAnimation } from '$lib/components/bubbleAnimation.js';
+    import { onMount } from 'svelte';
+
 	let { children } = $props();
+
+	onMount(() => {
+        startBubbleAnimation();
+    });
 </script>
 
-{@render children()}
+<div id="bubble-container" class="fixed inset-0 z-0 overflow-hidden"></div>
+<div class="relative z-10">
+    {@render children()}
+</div>
