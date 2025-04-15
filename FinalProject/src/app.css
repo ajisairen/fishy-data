@@ -6,11 +6,19 @@ body {
     height: 100%;
     padding: 0;
     margin: 0;
-    background-color: #faf9f6;
+    background-color: #003865;
+    color: #fff;
 }
 
 * {
     box-sizing: border-box;
+    border-color: #fff;
+}
+
+svg text,
+svg line {
+    fill: white;
+    stroke: white;
 }
 
 html {
@@ -18,4 +26,21 @@ html {
     flex-direction: row;
     justify-content: center;
     align-items: start;
+}
+
+.bubble {
+    position: absolute;
+    bottom: -100px;
+    border-radius: 50%;
+    opacity: 0.7;
+    animation: float linear infinite;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0) rotate(0deg);
+    }
+    100% {
+        transform: translateY(-120vh) rotate(var(--random-offset));
+    }
 }
