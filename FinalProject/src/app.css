@@ -18,7 +18,6 @@ body {
 svg text,
 svg line {
     fill: white;
-    stroke: white;
 }
 
 html {
