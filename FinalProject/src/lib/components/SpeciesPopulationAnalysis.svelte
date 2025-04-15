@@ -154,7 +154,7 @@
         {/each}
     </div>
     <div class="border-b border-b-gray-400 bg-[url(/images/waves.svg)] bg-white h-[calc(50vh-4rem)] w-[100vw] px-8 flex items-center justify-evenly">
-        <div class="font-semibold text-start text-7xl 2xl:text-8xl">
+        <div class="font-semibold text-start text-6xl 2xl:text-8xl">
             <!-- Why are fish populations falling? -->
             <!-- What makes a species popular to fish? -->
             The Guidebook to Minnesotan Fishing and Species Population Patterns
