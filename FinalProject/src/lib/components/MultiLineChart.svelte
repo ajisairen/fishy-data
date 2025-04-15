@@ -244,13 +244,13 @@ $: labelPositions = (() => {
 })();
 </script>
 
-<div bind:this={container} class="w-full">
+<div bind:this={container} class="w-full max-h-[calc(70vh-8rem)]">
 <svg 
   {width} 
   {height} 
   viewBox="0 0 {width} {height}" 
   preserveAspectRatio="xMidYMid meet"
-  class="w-full font-sans text-sm"
+  class="w-full font-sans text-sm max-h-[calc(70vh-8rem)]"
 >
   <g transform={`translate(${margin.left},${margin.top})`}>
     <!-- X Axis -->

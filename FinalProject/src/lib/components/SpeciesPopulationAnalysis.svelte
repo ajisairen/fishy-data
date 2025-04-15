@@ -154,14 +154,14 @@
         {/each}
     </div>
     <div class="border-b border-b-gray-400 bg-[url(/images/waves.svg)] bg-white h-[calc(50vh-4rem)] w-[100vw] px-8 flex items-center justify-evenly">
-        <div class="font-semibold text-start" style="font-size: 6em;">
+        <div class="font-semibold text-start text-7xl 2xl:text-8xl">
             <!-- Why are fish populations falling? -->
             <!-- What makes a species popular to fish? -->
             The Guidebook to Minnesotan Fishing and Species Population Patterns
         </div>
     </div>
     <div id="descContainer" class="flex flex-col justify-start items-start border-l border-l-gray-400 gap-y-8 px-8 py-8 h-[calc(50vh+4rem)] w-[calc(80vw-4rem)] left-[calc(20vw+4rem)] fixed { !showSideSpecies ? 'opacity-0 -z-40' : 'opacity-100 z-0'}">
-        <p id="yapContainer" class="text-3xl text-start w-full">{yapText}</p>
+        <p id="yapContainer" class="text-2xl 2xl:text-3xl text-start w-full">{yapText}</p>
         <div id="downArrow" class="rounded-full p-8 bg-gray-900 w-[100px] h-[100px] flex justify-center items-center">
             <svg xmlns="http://www.w3.org/2000/svg" width="25" viewBox="0 0 384 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path fill="#faf9f6" d="M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8 224 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/></svg>
         </div>

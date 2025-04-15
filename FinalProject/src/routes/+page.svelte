@@ -180,7 +180,7 @@
     <div class="h-full w-full max-w-[1280px] flex flex-col justify-start items-center">
         <div class="{inputFocused||selectedFish!='' ? 'translate-y-0' : 'translate-y-[40vh]'} py-[2rem] relative transition-all duration-500 ease-out w-3/4 flex flex-col gap-y-4 justify-center items-center">
             <h1 class="text-2xl font-semibold">What species do you want to fish?</h1>
-            <input bind:value={fishInputValue} onfocus={() => inputFocused = true} type="text" class="focus:outline-none w-full px-8 py-4 rounded-xl border border-gray-400" />
+            <input bind:value={fishInputValue} onfocus={() => inputFocused = true} type="text" placeholder="Enter fish species name" class="focus:outline-none w-full px-8 py-4 rounded-xl border border-gray-400" />
             <div class="w-full flex flex-col py-1 transition-all duration-500 absolute bottom-0 translate-y-[calc(100%-2rem)] {inputFocused ? 'opacity-100 block' : 'opacity-0 hidden'}">
                 {#each filteredFish as _fish}
                     <button onclick={() => {selectedFish=_fish, fishInputValue=_fish, inputFocused=false}} class="flex ease-in-out gap-x-[1rem] w-full py-1 px-2 group cursor-pointer">
