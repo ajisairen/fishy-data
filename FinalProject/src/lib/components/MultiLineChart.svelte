@@ -254,14 +254,14 @@ $: labelPositions = (() => {
 >
   <g transform={`translate(${margin.left},${margin.top})`}>
     <!-- X Axis -->
-    <line x1="0" y1={innerHeight} x2={innerWidth} y2={innerHeight} stroke="black" />
+    <line x1="0" y1={innerHeight} x2={innerWidth} y2={innerHeight} stroke="white" />
     {#each xTicks as tick}
       <line
         x1={xScale(tick)}
         y1={innerHeight}
         x2={xScale(tick)}
         y2={innerHeight + 6}
-        stroke="black"
+        stroke="white"
       />
       <text x={xScale(tick)} y={innerHeight + 20} text-anchor="middle">
         {tick}
@@ -269,9 +269,9 @@ $: labelPositions = (() => {
     {/each}
     
     <!-- Y Axis -->
-    <line x1="0" y1="0" x2="0" y2={innerHeight} stroke="black" />
+    <line x1="0" y1="0" x2="0" y2={innerHeight} stroke="white" />
     {#each yTicks as tick}
-      <line x1="-6" y1={yScale(tick)} x2="0" y2={yScale(tick)} stroke="black" />
+      <line x1="-6" y1={yScale(tick)} x2="0" y2={yScale(tick)} stroke="white" />
       <text x="-10" y={yScale(tick)} text-anchor="end" alignment-baseline="middle">
         {formatTickLabel(tick)}
       </text>
@@ -377,7 +377,7 @@ $: labelPositions = (() => {
 
     {#if isAvg}
         <circle cx={xScale(2007)} cy={yScale(rawData["2007"]["Weighted Average"])} 
-            r={7} fill="steelblue" 
+            r={7} fill="black" 
             class="cursor-pointer"
             onclick={() => setSelectedPoint(2007)}
             style="z-index: 100;"

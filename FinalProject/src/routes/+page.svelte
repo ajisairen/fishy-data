@@ -184,7 +184,7 @@
             <div class="w-full flex flex-col py-1 transition-all duration-500 absolute bottom-0 translate-y-[calc(100%-2rem)] {inputFocused ? 'opacity-100 block' : 'opacity-0 hidden'}">
                 {#each filteredFish as _fish}
                     <button onclick={() => {selectedFish=_fish, fishInputValue=_fish, inputFocused=false}} class="flex ease-in-out gap-x-[1rem] w-full py-1 px-2 group cursor-pointer">
-                        <div class="w-1 rounded-l-full bg-black hidden group-hover:block"></div>
+                        <div class="w-1 rounded-l-full bg-white hidden group-hover:block"></div>
                         <p class="underline">
                             {_fish}
                         </p>
@@ -197,7 +197,7 @@
                 {#each lakeRecommendations as lakeObj, idx}
                     {#if idx===0}
                         <div class="col-span-3 flex py-4 items-center gap-x-4">
-                            <h1 class="text-4xl font-bold text-blue-600">1.</h1>
+                            <h1 class="text-4xl font-bold">1.</h1>
                             <p class="text-2xl">{lakeObj.lake}</p>
                         </div>
                     {:else}
