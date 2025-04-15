@@ -377,13 +377,13 @@ $: labelPositions = (() => {
 
     {#if isAvg}
         <circle cx={xScale(2007)} cy={yScale(rawData["2007"]["Weighted Average"])} 
-            r={7} fill="steelblue" 
+            r={7} fill="#e8e679" 
             class="cursor-pointer"
             onclick={() => setSelectedPoint(2007)}
             style="z-index: 100;"
         />
         <circle cx={xScale(2020)} cy={yScale(rawData["2020"]["Weighted Average"])} 
-            r={7} fill="steelblue"
+            r={7} fill="#e8e679"
             class="cursor-pointer"
             onclick={() => setSelectedPoint(2020)}
             style="z-index: 100;"

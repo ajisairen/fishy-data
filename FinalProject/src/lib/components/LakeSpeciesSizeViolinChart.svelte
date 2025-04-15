@@ -136,7 +136,7 @@
                         .x1(bin => localXNum(bin.length))
                         .y(bin => y(bin.x0))
                         .curve(d3.curveCatmullRom))
-                    .style("fill", "steelblue")
+                    .style("fill", "#e8e679")
                     .style("stroke", "none");
             });
 
@@ -151,7 +151,7 @@
 			.attr("d", d3.area()
 				.y(d => y(d.x0))
 				.curve(d3.curveCatmullRom))
-			.style("fill", "steelblue")
+			.style("fill", "#e8e679")
 			.style("stroke", "none");
 	}
 
