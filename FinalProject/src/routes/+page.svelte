@@ -60,8 +60,6 @@
             }
         });
 
-        console.log(speciesToLake)
-
         gsap.timeline({
             scrollTrigger: {
                 trigger: '#weightedAveragePopChart',
