@@ -14,6 +14,7 @@
     import { ScrollToPlugin } from "gsap/ScrollToPlugin";
     import { MotionPathPlugin } from "gsap/MotionPathPlugin";
     import {ScrollTrigger} from "gsap/ScrollTrigger";
+    import SpeciesByLakePieChart from "$lib/components/SpeciesByLakePieChart.svelte";
 
     let curFish = $state("");
     let fishInputValue = $state("");
@@ -192,19 +193,24 @@
         </div>
         {#if selectedFish!="" && !inputFocused}
             <div class="flex flex-col w-3/4 -mt-[1rem]">
-                {#each lakeRecommendations as lakeObj, idx}
-                    {#if idx===0}
-                        <div class="col-span-3 flex py-4 items-center gap-x-4">
-                            <h1 class="text-4xl font-bold">1.</h1>
-                            <p class="text-2xl">{lakeObj.lake}</p>
+                <div class="col-span-3 flex flex-col py-4 items-center gap-x-4">
+                    <div class="flex w-full gap-x-[2rem] items-center">
+                        <h1 class="text-4xl font-bold">1.</h1>
+                        <p class="text-2xl">{lakeRecommendations[0].lake}</p>
+                    </div>
+                    <SpeciesByLakePieChart lake={lakeRecommendations[0].lake} species={selectedFish} width={500} />
+                </div>
+                <div class="grid grid-cols-3 w-full">
+                    {#each lakeRecommendations.slice(1, lakeRecommendations.length) as lakeObj, idx}
+                        <div class="flex flex-col py-4 pl-8 items-center gap-x-2">
+                            <div class="flex w-full gap-x-[2rem] items-center">
+                                <h1 class="text-2xl font-bold">{idx+2}.</h1>
+                                <p class="text-lg">{lakeObj.lake}</p>
+                            </div>
+                                <SpeciesByLakePieChart lake={lakeObj.lake} species={selectedFish} width={300} />
                         </div>
-                    {:else}
-                        <div class="col-span-3 flex py-4 pl-8 items-center gap-x-2">
-                            <h1 class="text-2xl font-bold">{idx+1}.</h1>
-                            <p class="text-lg">{lakeObj.lake}</p>
-                        </div>
-                    {/if}
-                {/each}
+                    {/each}
+                </div>
             </div>
         {/if}
     </div>
