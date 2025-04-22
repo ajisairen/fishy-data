@@ -60,12 +60,15 @@
             .attr("viewBox", [-width / 2, -height / 2, width, height])
             .attr("style", "max-width: 100%; height: auto;");
 
+        // console.log(color("walleye"))
         svg.append("g")
             .selectAll()
             .data(pie(data))
             .join("path")
             .attr("opacity", (d) => d.data.name===species ? 1 : 0.25)
             .attr("fill", (d) => color(d.data.name))
+            .attr("stroke", "#fff")
+            .attr("stroke-width", "1")
             .attr("d", arc)
             .append("title")
             .text((d) => `${d.data.name}: ${d.data.value}`);
@@ -82,7 +85,7 @@
             .data(pie(data))
             .join("text")
             .attr("transform", (d) => {
-                if (d.data.idx % 2 == 0) {
+                if (d.data.value < 25) {
                     var c = arc.centroid(d),
                         x = c[0],
                         y = c[1],
