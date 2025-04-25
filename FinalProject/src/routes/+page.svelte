@@ -97,7 +97,7 @@
     ];
 
     function getFish(value) {
-        if (value === "") return []
+        if (value === "") return fish;
         const filtered = fish.filter(item => item.toLowerCase().includes(value.toLowerCase()));
         return filtered;
     }
@@ -108,7 +108,7 @@
         const entries = Object.entries(speciesToLake[selectedFish]);
         const sorted = entries.sort(([, a], [, b]) => b - a);
 
-        return sorted.slice(0, 4).map(([lake, proportion]) => ({
+        return sorted.slice(0, 3).map(([lake, proportion]) => ({
             lake,
             proportion
         }));
@@ -138,7 +138,7 @@
                 </p>
             {:else}
                 <p>
-                    The fish survey counts appear stable over the years with the exception of two major discrepancies that occur in 2005-2007 and 2020. <b>Click on these points to learn more about what happened.</b>
+                    The fish survey counts appear stable over the years with the exception of two major discrepancies that occur in 2005-2007 and 2020. <b style="color: rgb(249, 148, 86);">Click on these points to learn more about what happened.</b>
                 </p>
             {/if}
         </div>
@@ -155,18 +155,18 @@
     </div>
     <div class="w-full flex flex-col justify-center items-start gap-y-[2rem] mr-[2rem] h-[calc(100vh-4rem)] text-2xl">
         <p>
-            We see that the population counts of each lake vary significantly year-to-year. However, Lake of the Woods and Leech Lake are consistently within the top 5 ranks. We can largely attribute this 
+            We see that <b style="color: rgb(249, 148, 86);">the population counts of each lake vary significantly year-to-year.</b> However, Lake of the Woods and Leech Lake are consistently within the top 5 ranks. We can largely attribute this 
             to the lakes' high population of Yellow Perch which tend to have extremely high population and survey counts. 
         </p>
         <p>
-            While we <b>do </b> recommend fishing these lakes because of their simultaneously large 
+            While we <b style="color: rgb(249, 148, 86);">do </b> recommend fishing these lakes because of their simultaneously large 
             Walleye populations, we suggest to be weary of these results if Yellow Perch are not your target catch because they have potentially scewed these findings.
         </p>
     </div>
 </div>
 <div class="h-screen w-[100vw] flex justify-center items-center">
     <div class="mx-[4rem] w-4/5 flex justify-center items-center h-full">
-        <p class="text-3xl">Here we analyze how fish sizes change from lake to lake. As expected, lakes are generally skewed towards smaller sized fish. Use this tool to help find a lake that has a high population of the size of fish you like to catch.</p>
+        <p class="text-3xl">Here we analyze how fish sizes change from lake to lake. It is evident that <b style="color: rgb(249, 148, 86);">lakes are generally skewed towards smaller sized fish.</b> Use this tool to help find a lake that has a high population of the size of fish you like to catch.</p>
     </div>
     <div class="w-full flex flex-col justify-center items-center gap-y-[2rem] mx-[2rem] h-full text-2xl">
         <h1 class="w-full text-2xl font-semibold">Surveyed Fish Sizes In Lakes</h1>
@@ -177,18 +177,20 @@
 </div>
 <div class="w-[100vw] h-screen flex justify-center items-center">
     <div class="h-full w-full max-w-[1280px] flex flex-col justify-start items-center">
-        <div class="{inputFocused||selectedFish!='' ? 'translate-y-0' : 'translate-y-[40vh]'} py-[2rem] relative transition-all duration-500 ease-out w-3/4 flex flex-col gap-y-4 justify-center items-center">
+        <div class="py-[2rem] relative transition-all duration-500 ease-out w-3/4 flex flex-col gap-y-4 justify-start items-center">
             <h1 class="text-2xl font-semibold">What species do you want to fish?</h1>
-            <input bind:value={fishInputValue} onfocus={() => inputFocused = true} type="text" placeholder="Enter fish species name" class="focus:outline-none w-full px-8 py-4 rounded-xl border border-gray-400" />
-            <div class="w-full flex flex-col py-1 transition-all duration-500 absolute bottom-0 translate-y-[calc(100%-2rem)] {inputFocused ? 'opacity-100 block' : 'opacity-0 hidden'}">
-                {#each filteredFish as _fish}
-                    <button onclick={() => {selectedFish=_fish, fishInputValue=_fish, inputFocused=false}} class="flex ease-in-out gap-x-[1rem] w-full py-1 px-2 group cursor-pointer">
-                        <div class="w-1 rounded-l-full bg-white hidden group-hover:block"></div>
-                        <p class="underline">
-                            {_fish}
-                        </p>
-                    </button>
-                {/each}
+            <div class="flex flex-col gap-y-[1rem] w-full">
+                <input bind:value={fishInputValue} onfocus={() => inputFocused = true} type="text" onblur={() => inputFocused = false} placeholder="Enter fish species name" class="focus:outline-none w-full px-8 py-4 rounded-xl border border-gray-400" />
+                <div class="w-full flex rounded-xl border border-white p-1 flex-col py-1 transition-all duration-500 {inputFocused ? 'opacity-100' : 'opacity-0'}" >
+                    {#each filteredFish as _fish}
+                        <button onclick={() => {selectedFish=_fish, fishInputValue=_fish, inputFocused=false}} class="flex ease-in-out gap-x-[1rem] w-full py-1 px-2 group cursor-pointer">
+                            <div class="w-1 rounded-l-full bg-white hidden group-hover:block"></div>
+                            <p class="underline">
+                                {_fish}
+                            </p>
+                        </button>
+                    {/each}
+                </div>
             </div>
         </div>
         {#if selectedFish!="" && !inputFocused}
@@ -200,7 +202,7 @@
                     </div>
                     <SpeciesByLakePieChart lake={lakeRecommendations[0].lake} species={selectedFish} width={500} />
                 </div>
-                <div class="grid grid-cols-3 w-full">
+                <div class="grid grid-cols-2 w-full">
                     {#each lakeRecommendations.slice(1, lakeRecommendations.length) as lakeObj, idx}
                         <div class="flex flex-col py-4 pl-8 items-center gap-x-2">
                             <div class="flex w-full gap-x-[2rem] items-center">

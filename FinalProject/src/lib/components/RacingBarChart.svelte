@@ -160,6 +160,7 @@
 		const keyframes = [];
 
 		years.forEach((year) => {
+            if (year < 1999) return;
 			keyframes.push([year, rank(year)]);
 		});
 

@@ -72,56 +72,18 @@
             .attr("d", arc)
             .append("title")
             .text((d) => `${d.data.name}: ${d.data.value}`);
-
-        var getAngle = function (d) {
-            return ((180 / Math.PI) * (d.startAngle + d.endAngle)) / 2 - 90;
-        };
-
-        svg.append("g")
-            .attr("font-family", "sans-serif")
-            .attr("font-size", 12)
-            .attr("text-anchor", "middle")
-            .selectAll()
-            .data(pie(data))
-            .join("text")
-            .attr("transform", (d) => {
-                if (d.data.value < 25) {
-                    var c = arc.centroid(d),
-                        x = c[0],
-                        y = c[1],
-                        h = Math.sqrt(x * x + y * y);
-                    return (
-                        "translate(" +
-                        (x / h) * radius +
-                        "," +
-                        (y / h) * radius +
-                        ") rotate(15)"
-                    );
-                } else {
-                    return `translate(${arc.centroid(d)}) rotate(15)`;
-                }
-            })
-            // .style("fill", "black")
-            .call((text) =>
-                text
-                    .append("tspan")
-                    .attr("y", "-0.4em")
-                    .attr("font-weight", "bold")
-                    .text((d) => d.data.name),
-            )
-            .call((text) =>
-                text
-                    .filter((d) => d.endAngle - d.startAngle > 0.25)
-                    .append("tspan")
-                    .attr("x", 0)
-                    .attr("y", "0.7em")
-                    .attr("fill-opacity", 0.7)
-                    .text((d) => d.data.value),
-            );
-
-        d3.selectAll(".text-element").style("fill", "black");
     });
 </script>
 
-<div class="flex justify-center items-center" bind:this={container}></div>
+<div class="relative flex justify-center items-center" bind:this={container}>
+    <div class="absolute -translate-y-1/2 -left-2/5 top-1/2 rounded-lg px-2 py-1 flex flex-col w-fit">
+        {#each data as item }
+            <div class="flex items-center gap-x-2">
+                <div class="w-[10px] h-[10px]" style={`background-color: ${color(item.name)};`}>
+                </div>
+                <p class="text-sm {item.name===species ? 'font-bold text-lg' : 'font-light'}">{item.name}</p>
+            </div>
+        {/each}
+    </div>
+</div>
 

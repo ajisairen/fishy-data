@@ -43,7 +43,7 @@
     ]
 
     let curFish = $state("");
-    let yapText = $state("In this exploration, we will begin by inspecting Minnesota DNR surveys of fish species population levels in lakes from 1999 to 2023 and then make inferences about the population levels as a whole. Next, we will analyze how lake populations have evolved over time with the same data. To help give suggestions of where to fish, we will reveal which lakes yield larger fish. Finally, we will give a hierachircal overview of Minnesota's fish population make up.");
+    let yapText = $state("In this exploration, we will begin by inspecting Minnesota DNR surveys of fish species population levels in lakes from 1999 to 2023 and then make inferences about the population levels as a whole. Next, we will analyze how lake populations have evolved over time with the same data. To help give suggestions of where to fish, we will reveal which lakes yield larger fish. Finally, we will help readers find lakes that have the highest survey counts of their fish species of interest.");
     let { showPopulationChart = $bindable(), showSideSpecies = $bindable() } = $props();
 
     function createFishTrigger({ containerId, fishName, text = "" }) {
