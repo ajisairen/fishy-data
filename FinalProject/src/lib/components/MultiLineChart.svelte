@@ -107,7 +107,7 @@
         : d3.scaleLinear().domain([0, yMax]).range([innerHeight, 0]);
 
     const customColors = [
-        "#4e79a7", "#f28e2c", "#e15759", "#76b7b2", "#59a14f", "#edc949", "#af7aa1", "#ff9da7", "#9c755f", "#bab0ab", "#ffff4f"
+        "#ff894f", "#5899bc", "#e15759", "#76b7b2", "#59a14f", "#edc949", "#af7aa1", "#ff9da7", "#9c755f", "#bab0ab", "#e4da5f"
     ];
 
     $: color = d3.scaleOrdinal(customColors).domain([...allSpecies]);
