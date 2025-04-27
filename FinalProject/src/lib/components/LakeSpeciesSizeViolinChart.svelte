@@ -1,9 +1,12 @@
-<script>
+<script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
 	import * as d3 from 'd3';
     // import fishDataByYear from "$lib/fish_size_violin_data.json";
 
     import surveys from "$lib/trusted_filtered_surveys.json";
+    import { passive } from 'svelte/legacy';
+    let color;
+    let maxSize;
     const fishDataByYear = buildViolinDataset(surveys);
 	export let selectedYear = 2022;
     const allYears = Object.keys(fishDataByYear).map(Number).sort((a, b) => a - b);
@@ -13,6 +16,7 @@
 	let container;
 
 	let resizeObserver;
+
 
     function buildViolinDataset(surveys) {
         const fishRecords = {}; // year -> records of fish, their size and lake found in
@@ -34,8 +38,14 @@
             'shorthead redhorse'
         ]);
 
+        const lakes: string[] = [];
+        const allSizes: number[] = [];
+
         for (const survey of surveys) {
             const { year, lake_name, species, size1Count, size2Count, size3Count, size4Count, size5Count, size6Count, size7Count, size8Count, size9Count, size10Count, size11Count, size12Count, size13Count } = survey;
+
+            // Get array of all lake names
+            if (!lakes.includes(lake_name)) lakes.push(lake_name);
 
             if (year < 1999 || !fish.has(species)) continue;
             if (!fishRecords[year]) {
@@ -48,9 +58,16 @@
                 const size = sizes[i];
                 for (let j = 0; j < counts[i]; j++) {
                     fishRecords[year].push({ "lake": lake_name, "size": size });
+                    if (!allSizes.includes(size)) allSizes.push(size);
                 }
             }
         }
+
+        // Give each lake a corresponding color
+        color = d3.scaleOrdinal(d3.schemeTableau10).domain([...lakes]);
+
+        // Get the max observed size
+        maxSize = d3.max(allSizes);
 
         return fishRecords;
     }
@@ -70,7 +87,9 @@
 			.attr("transform", `translate(${margin.left},${margin.top})`);
 
 		const yearData = fishDataByYear[selectedYear];
-		if (!yearData) {
+		
+        // Display "no data" if there is no data
+        if (!yearData || yearData.length === 0) {
             svg.append("text")
                 .attr("text-anchor", "middle")
                 .attr("x", width / 2)
@@ -78,12 +97,13 @@
                 .attr("font-size", height / 4)
                 .attr("font-weight", "bold")
                 .text("No Data");
+            return;
         };
 
 		const lakes = Array.from(new Set(yearData.map(d => d.lake)));
 
 		const y = d3.scaleLinear()
-			.domain([0, d3.max(yearData, d => d.size) || 50])
+			.domain([0, maxSize])
 			.range([height, 0]);
 
 		svg.append("g").call(d3.axisLeft(y));
@@ -144,7 +164,7 @@
                         .x1(bin => localXNum(bin.length))
                         .y(bin => y(bin.x0))
                         .curve(d3.curveCatmullRom))
-                    .style("fill", "#e8e679")
+                    .style("fill", color(d.key))
                     .style("stroke", "none");
             });
 
