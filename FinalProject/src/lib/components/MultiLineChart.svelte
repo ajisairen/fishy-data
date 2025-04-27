@@ -71,11 +71,17 @@
     $: data = Array.from(allSpecies).map((species) => {
         return {
             species,
-            values: years.map((year) => ({
-                year,
-                count: rawData[year]?.[species] ?? 0,
-            })),
+            values: years.filter((year) => rawData[year]?.[species] !== undefined) // filter out years with no data
+                .map((year) => ({
+                    year,
+                    count: rawData[year]?.[species] ?? 0,
+                })),
         };
+    }).sort((a, b) => {
+        // Sort species by lastValue.count (i.e., the last year's count)
+        const aLastValue = a.values[a.values.length - 1]?.count || 0;
+        const bLastValue = b.values[b.values.length - 1]?.count || 0;
+        return aLastValue - bLastValue; // Sort in descending order
     });
 
     $: xScale = d3
@@ -100,7 +106,11 @@
         ? d3.scaleLog().domain([yMin, yMax]).range([innerHeight, 0])
         : d3.scaleLinear().domain([0, yMax]).range([innerHeight, 0]);
 
-    $: color = d3.scaleOrdinal(d3.schemeTableau10).domain([...allSpecies]);
+    const customColors = [
+        "#4e79a7", "#f28e2c", "#e15759", "#76b7b2", "#59a14f", "#edc949", "#af7aa1", "#ff9da7", "#9c755f", "#bab0ab", "#ffff4f"
+    ];
+
+    $: color = d3.scaleOrdinal(customColors).domain([...allSpecies]);
 
     // Modify line generator to handle log scale
     $: line = d3
@@ -189,57 +199,60 @@
     $: labelPositions = (() => {
         // Initialize vars
         const positions: Record<string, number> = {};
+        let imagePosition: number[] = [];
         const usedPositions: number[][] = [];
         const imageHeight = 57;
         const imageYOffset = imageHeight / 2;
-        let imageY;
+        const textSize = 10;
+        const textOffset = textSize / 2;
+        let imageY = 0;
 
         // Calculate y position of focused species' image label
         const focusedLine = lines.find((l) => l.species === focusedSpecies);
         if (focusedLine) {
-            imageY =
-                yScale(
-                    Math.max(
-                        focusedLine.lastValue.count,
-                        useLogScale ? yMin : 0,
-                    ),
-                ) - imageYOffset;
-            usedPositions.push([imageY, imageY + imageHeight]);
+            imageY = yScale(Math.max(focusedLine.lastValue.count, useLogScale ? yMin : 0)) - imageYOffset;
+            imagePosition = [imageY, imageY + imageHeight];
         }
 
         // Calculate y position of each label
         for (const { species, lastValue } of lines) {
-            let y;
-            const textSize = 12;
-            const textOffset = textSize / 2;
+            let y: number;
 
-            // Not focused species, calculate y position for text label
             if (species !== focusedSpecies) {
+                // Not focused species
+                // calculate y position for text label
+
                 // Calculate default label position
                 y = yScale(Math.max(lastValue.count, useLogScale ? yMin : 0));
 
-                let i = 0;
-                while (i < usedPositions.length) {
-                    const pos: number[] = usedPositions[i];
-                    const middlePos = pos[0] + (pos[1] - pos[0]);
+                if (imagePosition.length >= 2 && y >= imagePosition[0] && y <= imagePosition[1]) {
+                    // Label is in the position of the image
+                    // remove the label
+                    y = 999;
+                }
+                else {
+                    // Label not in the position of the image
+                    let i = 0;
+                    // Find position for the label that does not overlap with other labels
+                    while (i < usedPositions.length) {
+                        const pos: number[] = usedPositions[i];
 
-                    if (y >= pos[0] && y < middlePos) {
-                        y = pos[0] - textOffset;
-                        i = 0;
-                    } else if (y >= middlePos && y <= pos[1]) {
-                        y = pos[1] + textOffset;
-                        i = 0;
-                    } else {
-                        i++;
+                        if (y >= pos[0] - textOffset && y <= pos[1] + textOffset) {
+                            // Label is in the top of another label
+                            // move up
+                            y = pos[0] - textSize;
+                            i = 0;
+                        } else i++; // Check next used position
                     }
                 }
-
+                // Store new used position
                 const yTop = y - textOffset;
                 const yBottom = y + textOffset;
                 usedPositions.push([yTop, yBottom]);
             }
-            // Is focused species, set y to position for image label
             else {
+                // Is focused species
+                // set y to position for image label
                 y = imageY;
             }
 
@@ -249,6 +262,16 @@
 
         return positions;
     })();
+
+    function lightenColor(color: string, val = 1): string {
+        const d3Color = d3.color(color);
+        // return if color failed to parse
+        if (!d3Color) return color;
+        return d3Color.brighter(val).toString();
+    }
+
+    // Get max year
+    $: maxYear = d3.max(years);
 </script>
 
 <div bind:this={container} class="w-full max-h-[calc(70vh-8rem)]">
@@ -257,7 +280,7 @@
         {height}
         viewBox="0 0 {width} {height}"
         preserveAspectRatio="xMidYMid meet"
-        class="w-full font-sans text-sm max-h-[calc(70vh-8rem)]"
+        class="w-full font-sans text-sm max-h-[calc(70vh-4.6rem)]"
     >
         <g transform={`translate(${margin.left},${margin.top})`}>
             <!-- X Axis -->
@@ -276,6 +299,7 @@
                     y2={innerHeight + 6}
                     stroke="white"
                 />
+                <!-- svelte-ignore component_name_lowercase -->
                 <text
                     x={xScale(tick)}
                     y={innerHeight + 20}
@@ -295,6 +319,7 @@
                     y2={yScale(tick)}
                     stroke="white"
                 />
+                <!-- svelte-ignore component_name_lowercase -->
                 <text
                     x="-10"
                     y={yScale(tick)}
@@ -366,19 +391,18 @@
     {/each} -->
 
             <!-- Labels at end of line -->
-            {#each lines as { species, color, lastValue, highlighted }}
+            {#each lines as { species, color, highlighted }}
                 {#if species !== focusedSpecies}
+                    <!-- svelte-ignore component_name_lowercase -->
                     <text
-                        x={xScale(lastValue.year) + 5}
+                        x={xScale(maxYear) + 5}
                         y={labelPositions[species]}
-                        fill={color}
+                        style="fill: {lightenColor(color, 1)};"
                         alignment-baseline="middle"
                         font-weight={highlighted || species === focusedSpecies
                             ? "bold"
                             : "normal"}
-                        font-size={highlighted || species === focusedSpecies
-                            ? "12px"
-                            : "10px"}
+                        font-size={"12px"}
                     >
                         {species}
                     </text>
@@ -388,7 +412,7 @@
                     <image
                         class="relative absolute z-10"
                         href={fishImages[species]}
-                        x={xScale(lastValue.year) + 5}
+                        x={xScale(maxYear) + 5}
                         y={labelPositions[species]}
                         width="100"
                         height="57"
@@ -396,6 +420,7 @@
                 {/if}
             {/each}
 
+            <!-- svelte-ignore component_name_lowercase -->
             <text
                 x={innerWidth / 2}
                 y={innerHeight + 36}
@@ -405,6 +430,7 @@
                 Year
             </text>
 
+            <!-- svelte-ignore component_name_lowercase -->
             <text
                 transform={`translate(-45, ${innerHeight / 2}) rotate(-90)`}
                 text-anchor="middle"

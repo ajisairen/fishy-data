@@ -27,6 +27,10 @@ html {
     align-items: start;
 }
 
+.text-outline {
+    -webkit-text-stroke: 1px #003865;
+}
+
 .bubble {
     position: absolute;
     bottom: -100px;
