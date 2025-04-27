@@ -70,7 +70,15 @@
 			.attr("transform", `translate(${margin.left},${margin.top})`);
 
 		const yearData = fishDataByYear[selectedYear];
-		if (!yearData) return;
+		if (!yearData) {
+            svg.append("text")
+                .attr("text-anchor", "middle")
+                .attr("x", width / 2)
+                .attr("y", height / 2)
+                .attr("font-size", height / 4)
+                .attr("font-weight", "bold")
+                .text("No Data");
+        };
 
 		const lakes = Array.from(new Set(yearData.map(d => d.lake)));
 
