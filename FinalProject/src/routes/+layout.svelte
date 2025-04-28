@@ -14,3 +14,8 @@
 <div class="relative z-10">
     {@render children()}
 </div>
+<footer class="relative">
+    <div class="wave wave1"></div>
+    <div class="wave wave2"></div>
+    <div class="wave wave3"></div>
+</footer>
