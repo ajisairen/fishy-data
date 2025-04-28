@@ -10,6 +10,7 @@
     import RacingBarChart from "$lib/components/RacingBarChart.svelte"
     import SpeciesPopulationAnalysis from "$lib/components/SpeciesPopulationAnalysis.svelte";
     import LakeSpeciesSizeViolinChart from "$lib/components/LakeSpeciesSizeViolinChart.svelte"
+    import ModelViewer from '$lib/components/ModelViewer.svelte';
     
     import { ScrollToPlugin } from "gsap/ScrollToPlugin";
     import { MotionPathPlugin } from "gsap/MotionPathPlugin";
@@ -118,6 +119,9 @@
     let selectedFish = $state("");
     let lakeRecommendations = $derived(getLakes(selectedFish));
 </script>
+<!-- <div class="w-full flex justify-center items-center">
+    <ModelViewer modelPath={"3d/LargemouthBass.glb"} scale={25} />
+</div> -->
 <SpeciesPopulationAnalysis bind:showSideSpecies={showSideSpecies} bind:showPopulationChart={showPopulationChart} />
 <div id="weightedAveragePopChart" class="w-[100vw] flex justify-center items-center h-[150vh]">
     <div class="ml-[2rem] w-4/5 flex justify-center items-center h-[calc(100vh-4rem)]">
