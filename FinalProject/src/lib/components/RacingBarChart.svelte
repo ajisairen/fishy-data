@@ -2,27 +2,21 @@
 	import { onMount, createEventDispatcher } from 'svelte';
 	import * as d3 from 'd3';
 
-	// Accept data as a parameter
 	export let data;
+	export let duration = 750;
+	export let pauseBetweenYears = 500;
+	export let playBarAnimation = false;
 
-	// Control props
-	export let duration = 750; // Transition duration in ms
-	export let pauseBetweenYears = 500; // Pause between transitions in ms
-	export let playBarAnimation = false; // Whether the animation should be playBarAnimation
-
-	// Create event dispatcher for communicating with parent
 	const dispatch = createEventDispatcher();
 
-	// Animation state variables
 	let animationState = {
 		currentKeyframeIndex: 0,
 		isAnimating: false,
-		currentTransition: null, // To track active transition
-		yearComplete: true // Whether current year transition is complete
+		currentTransition: null,
+		yearComplete: true
 	};
 
-	// Configuration
-	const width = 1200;
+	const width = 1000;
 	const barSize = 64;
 	const marginTop = 16;
 	const marginRight = 120;
@@ -109,7 +103,6 @@
 		}
 	}
 
-	// Methods to control the animation
 	function startAnimation() {
 		if (!animationState.isAnimating && keyframes.length > 0) {
 			animationState.isAnimating = true;
@@ -119,7 +112,6 @@
 
 	function pauseAnimation() {
 		animationState.isAnimating = false;
-		// If there's an active transition, interrupt it
 		if (animationState.currentTransition) {
 			svg.interrupt();
 		}
@@ -130,31 +122,23 @@
 		animationState.currentKeyframeIndex = 0;
 		animationState.yearComplete = true;
 
-		// Reset to first frame
 		if (keyframes.length > 0) {
 			const firstFrame = keyframes[0];
 			updateFrame(firstFrame, false);
 		}
 
-		// Dispatch event
 		dispatch('reset');
 	}
 
-	// Make these methods available to parent components
 	export { startAnimation, pauseAnimation, resetAnimation };
 
 	function createKeyframes(yearData) {
-		// Sort years
 		const years = Object.keys(yearData).map(Number).sort(d3.ascending);
 
-		// Function to rank lakes for a given year
 		function rank(year) {
-			// Create data array for all lakes
 			const currentData = Array.from(names, (name) => {
-				// Find the most recent value for this lake up to this year
 				let value = 0;
 
-				// Look for the most recent year data
 				for (let y = year; y >= Math.min(...years); y--) {
 					if (yearData[y] && yearData[y].has(name)) {
 						value = yearData[y].get(name);
@@ -165,10 +149,7 @@
 				return { name, value, rank: 0 };
 			});
 
-			// Sort by value
 			currentData.sort((a, b) => d3.descending(a.value, b.value));
-
-			// Assign ranks
 			for (let i = 0; i < currentData.length; ++i) {
 				currentData[i].rank = i;
 			}
@@ -176,11 +157,10 @@
 			return currentData;
 		}
 
-		// Generate keyframes
 		const keyframes = [];
 
-		// Add a frame for each year
 		years.forEach((year) => {
+            if (year < 1999) return;
 			keyframes.push([year, rank(year)]);
 		});
 
@@ -230,9 +210,7 @@
 							.transition(transition)
 							.remove()
 							.attr('y', (d) => y((next.get(d) || d).rank))
-							.attr('width', (d) => Math.max(0, x((next.get(d) || d).value) - marginLeft))
-				);
-
+							.attr('width', (d) => Math.max(0, x((next.get(d) || d).value) - marginLeft)));
 			if (transition) {
 				bar
 					.transition(transition)
@@ -287,9 +265,7 @@
 								'transform',
 								(d) =>
 									`translate(${Math.max(marginLeft, x((next.get(d) || d).value) + 5)},${y((next.get(d) || d).rank) + y.bandwidth() / 2})`
-							)
-				);
-
+							));
 			if (transition) {
 				label
 					.transition(transition)
@@ -339,70 +315,55 @@
 		};
 	}
 
-	// Update the frame without animation
 	function updateFrame(keyframe, useTransition = false) {
-		// Update the x scale domain
 		x.domain([0, d3.max(keyframe[1], (d) => d.value)]);
 
 		let transition = null;
 		if (useTransition) {
 			transition = svg.transition().duration(duration).ease(d3.easeLinear);
 
-			// Store reference to the transition
 			animationState.currentTransition = transition;
 		}
 
-		// Update the chart elements
 		axis(keyframe, transition);
 		bars(keyframe, transition);
 		labels(keyframe, transition);
 		ticker(keyframe, transition);
 
-		// Dispatch event
 		dispatch('yearChange', { year: keyframe[0] });
 
 		return transition;
 	}
 
-	// Main animation loop
 	async function animate() {
 		if (!animationState.isAnimating) return;
 
-		// Continue from current position
 		while (animationState.currentKeyframeIndex < keyframes.length && animationState.isAnimating) {
 			const currentKeyframe = keyframes[animationState.currentKeyframeIndex];
 
-			// If we're starting a new year
 			if (animationState.yearComplete) {
 				animationState.yearComplete = false;
 
-				// Create transition
 				const transition = updateFrame(currentKeyframe, true);
 
 				try {
-					// Wait for transition to complete
 					if (transition) await transition.end();
 
-					// Transition is complete
 					animationState.yearComplete = true;
 					animationState.currentTransition = null;
 
-					// Add pause between years if specified
 					if (pauseBetweenYears > 0 && animationState.isAnimating) {
 						await new Promise((resolve) => setTimeout(resolve, pauseBetweenYears));
 					}
 
-					// Move to next keyframe
 					animationState.currentKeyframeIndex++;
 
-					// Check if we've reached the end
 					if (animationState.currentKeyframeIndex >= keyframes.length) {
 						dispatch('complete');
 						animationState.isAnimating = false;
 						return;
 					}
 				} catch (e) {
-					// Transition was interrupted
 					animationState.yearComplete = true;
 					animationState.currentTransition = null;
 					return;
