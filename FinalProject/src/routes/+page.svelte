@@ -4,18 +4,16 @@
 
     import weightedAveragePopulationOverTime from "$lib/weighted_average_species_population_over_time.json";
     import lakePopulationsOverTime from "$lib/lake_populations_over_time.json";
-    import speciesToLake from "$lib/speciesToLake.json";
 
     import MultiLineChart from "$lib/components/MultiLineChart.svelte";
     import RacingBarChart from "$lib/components/RacingBarChart.svelte"
     import SpeciesPopulationAnalysis from "$lib/components/SpeciesPopulationAnalysis.svelte";
     import LakeSpeciesSizeViolinChart from "$lib/components/LakeSpeciesSizeViolinChart.svelte"
-    import ModelViewer from '$lib/components/ModelViewer.svelte';
+    import SearchResults from "$lib/components/SearchResults.svelte"
     
     import { ScrollToPlugin } from "gsap/ScrollToPlugin";
     import { MotionPathPlugin } from "gsap/MotionPathPlugin";
     import {ScrollTrigger} from "gsap/ScrollTrigger";
-    import SpeciesByLakePieChart from "$lib/components/SpeciesByLakePieChart.svelte";
 
     let curFish = $state("");
     let fishInputValue = $state("");
@@ -103,25 +101,9 @@
         return filtered;
     }
 
-    function getLakes(selectedFish) {
-        if (!selectedFish || !speciesToLake[selectedFish]) return [];
-
-        const entries = Object.entries(speciesToLake[selectedFish]);
-        const sorted = entries.sort(([, a], [, b]) => b - a);
-
-        return sorted.slice(0, 3).map(([lake, proportion]) => ({
-            lake,
-            proportion
-        }));
-    }
-
     let filteredFish = $derived(getFish(fishInputValue));
     let selectedFish = $state("");
-    let lakeRecommendations = $derived(getLakes(selectedFish));
 </script>
-<!-- <div class="w-full flex justify-center items-center">
-    <ModelViewer modelPath={"3d/LargemouthBass.glb"} scale={25} />
-</div> -->
 <SpeciesPopulationAnalysis bind:showSideSpecies={showSideSpecies} bind:showPopulationChart={showPopulationChart} />
 <div id="weightedAveragePopChart" class="w-[100vw] flex justify-center items-center h-[150vh]">
     <div class="ml-[2rem] w-4/5 flex justify-center items-center h-[calc(100vh-4rem)]">
@@ -198,26 +180,7 @@
             </div>
         </div>
         {#if selectedFish!="" && !inputFocused}
-            <div class="flex flex-col w-3/4 -mt-[1rem]">
-                <div class="col-span-3 flex flex-col py-4 items-center gap-x-4">
-                    <div class="flex w-full gap-x-[2rem] items-center">
-                        <h1 class="text-4xl font-bold">1.</h1>
-                        <p class="text-2xl">{lakeRecommendations[0].lake}</p>
-                    </div>
-                    <SpeciesByLakePieChart lake={lakeRecommendations[0].lake} species={selectedFish} width={500} />
-                </div>
-                <div class="grid grid-cols-2 w-full">
-                    {#each lakeRecommendations.slice(1, lakeRecommendations.length) as lakeObj, idx}
-                        <div class="flex flex-col py-4 pl-8 items-center gap-x-2">
-                            <div class="flex w-full gap-x-[2rem] items-center">
-                                <h1 class="text-2xl font-bold">{idx+2}.</h1>
-                                <p class="text-lg">{lakeObj.lake}</p>
-                            </div>
-                                <SpeciesByLakePieChart lake={lakeObj.lake} species={selectedFish} width={300} />
-                        </div>
-                    {/each}
-                </div>
-            </div>
+            <SearchResults selectedFish={selectedFish} />
         {/if}
     </div>
 </div>

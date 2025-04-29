@@ -6,8 +6,8 @@
 
     export let modelPath: string; // .glb model path
     export let scale: number = 1; // default .glb model scale
-    export let width: number = 800; // default canvas width
-    export let height: number = 600; // default canvas height
+    export let width: string = "800px";   // default width
+    export let height: string = "400px";  // default height
 
     let container: HTMLDivElement;
     let scene: THREE.Scene;
@@ -16,12 +16,14 @@
     let controls: OrbitControls;
 
     onMount(() => {
+        const cameraPos = [5, 0, -1.75];
+
         // Initialize scene, camera, and renderer
         scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x808080);
-        camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-        renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(width, height);
+        const rect = container.getBoundingClientRect();
+        camera = new THREE.PerspectiveCamera(75, rect.width / rect.height, 0.1, 1000);
+        renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(rect.width, rect.height);
         container.appendChild(renderer.domElement);
 
         // Ambient Light
@@ -58,9 +60,10 @@
         // OrbitControls for rotation
         controls = new OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true; // Smooth rotation
-        controls.dampingFactor = 0.05;
+        controls.dampingFactor = 0.25;
 
-        camera.position.set(0, 2, 5);
+        camera.position.set(cameraPos[0], cameraPos[1], cameraPos[2]);
+        controls.target.set(0, cameraPos[1], cameraPos[2]);
         controls.update();
 
         // Animation loop
@@ -73,4 +76,4 @@
     });
 </script>
 
-<div bind:this={container} style="width: {width}px; height: {height}px;"></div>
+<div bind:this={container} style="width: {width}; height: {height};"></div>

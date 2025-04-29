@@ -17,7 +17,7 @@
             };
         })
         .filter((item) => item.value !== undefined);
-    console.log(data);
+    //console.log(data);
 
     const hPadding = 50;
     const vPadding = 50;
@@ -75,15 +75,20 @@
     });
 </script>
 
-<div class="relative flex justify-center items-center" bind:this={container}>
-    <div class="absolute -translate-y-1/2 -left-2/5 top-1/2 rounded-lg px-2 py-1 flex flex-col w-fit">
+<div class="flex justify-center items-center w-full">
+    <div class="flex flex-row items-center gap-4">
+        <div bind:this={container} class="flex justify-center items-center">
+            <!-- The pie chart will go here -->
+        </div>
+        <div class="flex flex-col gap-2">
         {#each data as item }
             <div class="flex items-center gap-x-2">
-                <div class="w-[10px] h-[10px]" style={`background-color: ${color(item.name)};`}>
-                </div>
+                <div class="w-[10px] h-[10px]" style={`background-color: ${color(item.name)};`}></div>
                 <p class="text-sm {item.name===species ? 'font-bold text-lg' : 'font-light'}">{item.name}</p>
             </div>
         {/each}
+        </div>
     </div>
 </div>
+  
 
