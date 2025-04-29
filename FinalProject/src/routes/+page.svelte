@@ -166,10 +166,26 @@
         <div class="py-[2rem] relative transition-all duration-500 ease-out w-3/4 flex flex-col gap-y-4 justify-start items-center">
             <h1 class="text-2xl font-semibold">What species do you want to fish?</h1>
             <div class="flex flex-col gap-y-[1rem] w-full">
-                <input bind:value={fishInputValue} onfocus={() => inputFocused = true} type="text" onblur={() => inputFocused = false} placeholder="Enter fish species name" class="focus:outline-none w-full px-8 py-4 rounded-xl border border-gray-400" />
+                <input
+                    bind:value={fishInputValue}
+                    onfocus={() => inputFocused = true}
+                    placeholder="Enter fish species name"
+                    class="focus:outline-none w-full px-8 py-4 rounded-xl border border-gray-400"
+                />
                 <div class="w-full flex rounded-xl border border-white p-1 flex-col py-1 transition-all duration-500 {inputFocused ? 'opacity-100' : 'opacity-0'}" >
                     {#each filteredFish as _fish}
-                        <button onclick={() => {selectedFish=_fish, fishInputValue=_fish, inputFocused=false}} class="flex ease-in-out gap-x-[1rem] w-full py-1 px-2 group cursor-pointer">
+                    <button
+                        onclick={(e) => {
+                            e.preventDefault();
+                            selectedFish = _fish;
+                            fishInputValue = _fish;
+                            inputFocused = false;
+                            if (document.activeElement instanceof HTMLElement) {
+                                document.activeElement.blur();
+                            }
+                        }}
+                        class="flex ease-in-out gap-x-[1rem] w-full py-1 px-2 group cursor-pointer"
+                    >
                             <div class="w-1 rounded-l-full bg-white hidden group-hover:block"></div>
                             <p class="underline">
                                 {_fish}

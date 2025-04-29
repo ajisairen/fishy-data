@@ -1,13 +1,18 @@
-<script>
+<script lang="ts">
+    import { onMount } from "svelte";
     import * as d3 from "d3";
     import speciesToLake from "$lib/speciesToLake.json";
 
-    export let lake;
-    export let width;
-    export let species;
+    export let lake: string;
+    export let width: number;
+    export let species: string;
+
+    let container: HTMLDivElement;
+    let svg;
 
     let nonce = -1;
-    const data = Object.keys(speciesToLake)
+
+    $: data = Object.keys(speciesToLake)
         .map((species) => {
             nonce++;
             return {
@@ -17,25 +22,24 @@
             };
         })
         .filter((item) => item.value !== undefined);
-    //console.log(data);
 
     const hPadding = 50;
     const vPadding = 50;
-    const height = Math.min(width - hPadding, 500);
-    const radius = Math.min(width - hPadding, height - vPadding) / 2;
+    $: height = Math.min(width - hPadding, 500);
+    $: radius = Math.min(width - hPadding, height - vPadding) / 2;
 
-    const arc = d3
+    $: arc = d3
         .arc()
         .innerRadius(radius * 0.25)
         .outerRadius(radius - 1);
 
-    const pie = d3
+    $: pie = d3
         .pie()
         .padAngle(1 / radius)
         .sort(null)
         .value((d) => d.value);
 
-    const color = d3
+    $: color = d3
         .scaleOrdinal()
         .domain(data.map((d) => d.name))
         .range(
@@ -46,13 +50,15 @@
                 )
                 .reverse(),
         );
+    
+    function createPieChart() {
+        // Return if container does not exist
+        if (!container) return;
 
-    let container;
+        // Remove previous SVG
+        d3.select(container).selectAll("*").remove();
 
-    import { onMount } from "svelte";
-
-    onMount(() => {
-        const svg = d3
+        svg = d3
             .select(container)
             .append("svg")
             .attr("width", width)
@@ -72,7 +78,16 @@
             .attr("d", arc)
             .append("title")
             .text((d) => `${d.data.name}: ${d.data.value}`);
+    }
+
+    onMount(() => {
+        createPieChart();
     });
+
+    // Create a new pie chart if data, species, or container change
+    $: if (data && species && container) {
+        createPieChart();
+    }
 </script>
 
 <div class="flex justify-center items-center w-full">
@@ -83,7 +98,7 @@
         <div class="flex flex-col gap-2">
         {#each data as item }
             <div class="flex items-center gap-x-2">
-                <div class="w-[10px] h-[10px]" style={`background-color: ${color(item.name)};`}></div>
+                <div class="w-[12px] h-[12px]" style={`background-color: ${color(item.name)};`}></div>
                 <p class="text-sm {item.name===species ? 'font-bold text-lg' : 'font-light'}">{item.name}</p>
             </div>
         {/each}
