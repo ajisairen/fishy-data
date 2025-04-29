@@ -162,7 +162,7 @@
         </div>
     </div>
 </div>
-<div class="w-[100vw] h-screen flex justify-center items-center">
+<div class="w-[100vw] h-[120vh] flex justify-center items-center">
     <div class="h-full w-full max-w-[1280px] flex flex-col justify-start items-center">
         <div class="py-[2rem] relative transition-all duration-500 ease-out w-3/4 flex flex-col gap-y-4 justify-start items-center">
             <h1 class="text-3xl font-bold">Find lakes with the highest population of a specific fish species!</h1>
