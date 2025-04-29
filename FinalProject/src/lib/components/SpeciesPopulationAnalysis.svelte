@@ -139,7 +139,8 @@
                     showSideSpecies = true;
                 },
             }
-        });        
+        });
+
 
         for (let i = 0; i < fish.length; i++) {
             createFishTrigger({ containerId: `container${i}`, fishName: fish[i], text: fishDialog.length > i ? fishDialog[i] : "" });
