@@ -14,9 +14,9 @@
     let renderer: THREE.WebGLRenderer | null = null;
     let controls: OrbitControls | null = null;
 
-    const fishModels: Record<string, string> = {
-        "white sucker":         "/models/white_sucker.glb",
-        walleye:                "/models/walleye.glb",
+    const fishModels: Record<string, string | null> = {
+        "white sucker":         null,
+        walleye:                null,
         pumpkinseed:            "/models/pumpkinseed.glb",
         bluegill:               "/models/bluegill.glb",
         "largemouth bass":      "/models/largemouth_bass.glb",
@@ -31,10 +31,10 @@
         "shorthead redhorse":   "/models/shorthead_redhorse.glb"
     };
 
-    const fishSizes: Record<string, number> = {
-        "white sucker":         5,
-        walleye:                5,
-        pumpkinseed:            5,
+    const fishSizes: Record<string, number | null> = {
+        "white sucker":         null,
+        walleye:                null,
+        pumpkinseed:            0.1,
         bluegill:               25,
         "largemouth bass":      25,
         "yellow perch":         5,
@@ -42,27 +42,44 @@
         "tullibee (cisco)":     5,
         "brown bullhead":       5,
         "northern pike":        5,
-        "black crappie":        5,
+        "black crappie":        1,
         "yellow bullhead":      5,
         burbot:                 5,
-        "shorthead redhorse":   5
+        "shorthead redhorse":   1
     };
 
-    const fishCameraPos: Record<string, number[]> = {
-        "white sucker":         [5, 0, -1.75],
-        walleye:                [5, 0, -1.75],
-        pumpkinseed:            [5, 0, -1.75],
-        bluegill:               [5, 0, -1.75],
+    const fishCameraPos: Record<string, number[] | null> = {
+        "white sucker":         null,
+        walleye:                null,
+        pumpkinseed:            [1.25, -0.75, 1.6],
+        bluegill:               [3, 0, -0.25],
         "largemouth bass":      [5, 0, -1.75],
         "yellow perch":         [5, 0, -1.75],
         "rock bass":            [5, 0, -1.75],
         "tullibee (cisco)":     [5, 0, -1.75],
         "brown bullhead":       [5, 0, -1.75],
         "northern pike":        [5, 0, -1.75],
-        "black crappie":        [5, 0, -1.75],
+        "black crappie":        [5, 2.5, -0.5],
         "yellow bullhead":      [5, 0, -1.75],
         burbot:                 [5, 0, -1.75],
-        "shorthead redhorse":   [5, 0, -1.75]
+        "shorthead redhorse":   [3.75, 1.45, 4]
+    };
+
+    const fishTarget: Record<string, number[] | null> = {
+        "white sucker":         null,
+        walleye:                null,
+        pumpkinseed:            null,
+        bluegill:               null,
+        "largemouth bass":      null,
+        "yellow perch":         null,
+        "rock bass":            null,
+        "tullibee (cisco)":     null,
+        "brown bullhead":       null,
+        "northern pike":        null,
+        "black crappie":        null,
+        "yellow bullhead":      null,
+        burbot:                 null,
+        "shorthead redhorse":   [1.25, 1.45, 0]
     };
 
     function createModelViewer() {
@@ -92,8 +109,17 @@
 
         // Camera setup
         const cameraPos = fishCameraPos[species];
+        if (!cameraPos) return;
         camera.position.set(cameraPos[0], cameraPos[1], cameraPos[2]);
-        controls.target.set(0, cameraPos[1], cameraPos[2]);
+        const cameraTarget = fishTarget[species];
+        if (cameraTarget !== null) {
+            // Look at specified target
+            controls.target.set(cameraTarget[0], cameraTarget[1], cameraTarget[2]);
+        }
+        else {
+            // Look at calculated target
+            controls.target.set(0, cameraPos[1], cameraPos[2]);
+        }
         controls.update();
 
         // Animation loop
