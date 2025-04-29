@@ -35,7 +35,7 @@ html {
     position: absolute;
     bottom: -100px;
     border-radius: 50%;
-    opacity: 0.5;
+    opacity: 0.3;
     animation: float linear infinite;
 }
 
