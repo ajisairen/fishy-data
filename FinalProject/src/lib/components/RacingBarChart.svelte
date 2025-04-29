@@ -1,5 +1,6 @@
 <script>
 	import { onMount, createEventDispatcher } from 'svelte';
+	import { fade } from 'svelte/transition';
 	import * as d3 from 'd3';
 
 	export let data;
@@ -37,6 +38,10 @@
 	let x, y, color, axis, bars, labels, ticker;
 	let prev, next;
 
+	let selectedYear;
+    let minYear, maxYear;
+	let showSlider = false;
+
 	onMount(() => {
 		svg = d3
 			.select(container)
@@ -56,6 +61,10 @@
 		});
 
 		keyframes = createKeyframes(yearData);
+
+		minYear = d3.min(keyframes, ([year]) => year);
+        maxYear = d3.max(keyframes, ([year]) => year);
+        selectedYear = maxYear;
 
 		y = d3
 			.scaleBand()
@@ -102,6 +111,13 @@
 			}
 		}
 	}
+
+	function updateChartForYear(year) {
+        const keyframe = keyframes.find(([y]) => y === year);
+        if (keyframe) {
+            updateFrame(keyframe, false);
+        }
+    }
 
 	function startAnimation() {
 		if (!animationState.isAnimating && keyframes.length > 0) {
@@ -361,6 +377,7 @@
 					if (animationState.currentKeyframeIndex >= keyframes.length) {
 						dispatch('complete');
 						animationState.isAnimating = false;
+						showSlider = true;
 						return;
 					}
 				} catch (e) {
@@ -375,6 +392,23 @@
 
 <div bind:this={container}></div>
 
+{#if showSlider}
+	<div class="flex w-full gap-x-[1rem] px-[2rem] items-center mt-4"
+	transition:fade={{ duration: 500 }}
+	>
+		<h1 class="text-4xl font-semibold">{selectedYear}</h1>
+		<input
+			id="year-slider"
+			type="range"
+			min={minYear}
+			max={maxYear}
+			bind:value={selectedYear}
+			class="w-full px-2 mt-2"
+			on:input={() => updateChartForYear(selectedYear)}
+		/>
+	</div>
+{/if}
+
 <style>
 	div {
 		width: 100%;
@@ -385,5 +419,9 @@
         align-items: center;
         overflow: visible;
 	}
+
+	input[type="range"] {
+        accent-color: steelblue;
+    }
 </style>
 
