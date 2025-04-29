@@ -96,10 +96,12 @@
             <!-- The pie chart will go here -->
         </div>
         <div class="flex flex-col gap-2">
-        {#each data as item }
+        {#each data as item}
             <div class="flex items-center gap-x-2">
                 <div class="w-[12px] h-[12px]" style={`background-color: ${color(item.name)};`}></div>
-                <p class="text-sm {item.name===species ? 'font-bold text-lg' : 'font-light'}">{item.name}</p>
+                <p class="{item.name===species ? 'font-bold text-lg' : 'font-light text-sm'}">
+                    {item.name}: <span class="italic">{item.value}</span>
+                </p>
             </div>
         {/each}
         </div>

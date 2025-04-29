@@ -31,6 +31,10 @@ html {
     -webkit-text-stroke: 1px #003865;
 }
 
+.modeled-option {
+    color: #bfdeff;
+}
+
 .bubble {
     position: absolute;
     bottom: -100px;

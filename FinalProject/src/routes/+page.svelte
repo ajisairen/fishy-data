@@ -15,6 +15,8 @@
     import { MotionPathPlugin } from "gsap/MotionPathPlugin";
     import {ScrollTrigger} from "gsap/ScrollTrigger";
 
+    const modeledFish = ["pumpkinseed", "bluegill", "largemouth bass", "yellow perch", "black crappie", "shorthead redhorse"];
+    
     let curFish = $state("");
     let fishInputValue = $state("");
     let yapText = $state("In this exploration, we will begin by inspecting Minnesota DNR surveys of fish species population levels in lakes from 1999 to 2023 and then make inferences about the population levels as a whole. Next, we will analyze how lake populations have evolved over time with the same data. To help give suggestions of where to fish, we will reveal which lakes yield larger fish. Finally, we will give a hierachircal overview of Minnesota's fish population make up.");
@@ -76,7 +78,6 @@
             }
         });        
     });
-
 
     const fish = [
         'white sucker',
@@ -164,6 +165,7 @@
 <div class="w-[100vw] h-screen flex justify-center items-center">
     <div class="h-full w-full max-w-[1280px] flex flex-col justify-start items-center">
         <div class="py-[2rem] relative transition-all duration-500 ease-out w-3/4 flex flex-col gap-y-4 justify-start items-center">
+            <h1 class="text-3xl font-bold">Find lakes with the highest population of a specific fish species!</h1>
             <h1 class="text-2xl font-semibold">What species do you want to fish?</h1>
             <div class="flex flex-col gap-y-[1rem] w-full">
                 <input
@@ -172,7 +174,7 @@
                     placeholder="Enter fish species name"
                     class="focus:outline-none w-full px-8 py-4 rounded-xl border border-gray-400"
                 />
-                <div class="w-full flex rounded-xl border border-white p-1 flex-col py-1 transition-all duration-500 {inputFocused ? 'opacity-100' : 'opacity-0'}" >
+                <div class="w-full flex rounded-xl border border-white p-1 flex-col py-1 transition-all duration-500 {inputFocused ? 'opacity-100' : 'hidden'}" >
                     {#each filteredFish as _fish}
                     <button
                         onclick={(e) => {
@@ -187,7 +189,7 @@
                         class="flex ease-in-out gap-x-[1rem] w-full py-1 px-2 group cursor-pointer"
                     >
                             <div class="w-1 rounded-l-full bg-white hidden group-hover:block"></div>
-                            <p class="underline">
+                            <p class="underline {modeledFish.includes(_fish) ? 'modeled-option' : ''}">
                                 {_fish}
                             </p>
                         </button>
@@ -196,7 +198,7 @@
             </div>
         </div>
         {#if selectedFish!="" && !inputFocused}
-            <SearchResults selectedFish={selectedFish} />
+            <SearchResults selectedFish={selectedFish} modeledFish={modeledFish} />
         {/if}
     </div>
 </div>

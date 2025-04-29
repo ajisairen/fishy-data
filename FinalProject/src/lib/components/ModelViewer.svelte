@@ -14,75 +14,49 @@
     let renderer: THREE.WebGLRenderer | null = null;
     let controls: OrbitControls | null = null;
 
-    const fishModels: Record<string, string | null> = {
-        "white sucker":         null,
-        walleye:                null,
+    const fishModels: Record<string, string> = {
         pumpkinseed:            "/models/pumpkinseed.glb",
         bluegill:               "/models/bluegill.glb",
         "largemouth bass":      "/models/largemouth_bass.glb",
         "yellow perch":         "/models/yellow_perch.glb",
-        "rock bass":            "/models/rock_bass.glb",
-        "tullibee (cisco)":     "/models/tullibee_cisco.glb",
-        "brown bullhead":       "/models/brown_bullhead.glb",
-        "northern pike":        "/models/northern_pike.glb",
         "black crappie":        "/models/black_crappie.glb",
-        "yellow bullhead":      "/models/yellow_bullhead.glb",
-        burbot:                 "/models/burbot.glb",
         "shorthead redhorse":   "/models/shorthead_redhorse.glb"
     };
 
-    const fishSizes: Record<string, number | null> = {
-        "white sucker":         null,
-        walleye:                null,
+    const fishSizes: Record<string, number> = {
         pumpkinseed:            0.1,
         bluegill:               25,
         "largemouth bass":      25,
         "yellow perch":         5,
-        "rock bass":            5,
-        "tullibee (cisco)":     5,
-        "brown bullhead":       5,
-        "northern pike":        5,
         "black crappie":        1,
-        "yellow bullhead":      5,
         burbot:                 5,
         "shorthead redhorse":   1
     };
 
-    const fishCameraPos: Record<string, number[] | null> = {
-        "white sucker":         null,
-        walleye:                null,
+    const fishCameraPos: Record<string, number[]> = {
         pumpkinseed:            [1.25, -0.75, 1.6],
         bluegill:               [3, 0, -0.25],
         "largemouth bass":      [5, 0, -1.75],
-        "yellow perch":         [5, 0, -1.75],
-        "rock bass":            [5, 0, -1.75],
-        "tullibee (cisco)":     [5, 0, -1.75],
-        "brown bullhead":       [5, 0, -1.75],
-        "northern pike":        [5, 0, -1.75],
+        "yellow perch":         [3, 0, 0],
         "black crappie":        [5, 2.5, -0.5],
-        "yellow bullhead":      [5, 0, -1.75],
         burbot:                 [5, 0, -1.75],
         "shorthead redhorse":   [3.75, 1.45, 4]
     };
 
     const fishTarget: Record<string, number[] | null> = {
-        "white sucker":         null,
-        walleye:                null,
         pumpkinseed:            null,
         bluegill:               null,
         "largemouth bass":      null,
         "yellow perch":         null,
-        "rock bass":            null,
-        "tullibee (cisco)":     null,
-        "brown bullhead":       null,
-        "northern pike":        null,
         "black crappie":        null,
-        "yellow bullhead":      null,
         burbot:                 null,
         "shorthead redhorse":   [1.25, 1.45, 0]
     };
 
     function createModelViewer() {
+        // Return if fish does not have a model
+        if (!(species in fishModels)) return;
+
         // Initialize scene, camera, and renderer
         scene = new THREE.Scene();
         const rect = container.getBoundingClientRect();
