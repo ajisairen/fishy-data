@@ -154,12 +154,13 @@
             </button>
         {/each}
     </div>
-    <div class="border-b border-b-gray-400 bg-[url(/images/waves.svg)] bg-white h-[calc(50vh-4rem)] w-[100vw] px-8 flex items-center justify-evenly">
-        <div class="font-semibold text-start text-5xl 2xl:text-8xl text-outline">
+    <div class="border-b border-b-gray-400 bg-[url(/images/waves.svg)] bg-white h-[calc(50vh-4rem)] w-[100vw] px-8 flex flex-col justify-center">
+        <div class="font-semibold text-start text-5xl 2xl:text-8xl text-outline mb-4 py-20">
             <!-- Why are fish populations falling? -->
             <!-- What makes a species popular to fish? -->
             The Guidebook to Minnesotan Fishing and Species Population Patterns
         </div>
+        <div class="text-start font-semibold underline"><a href="/acknowledgements">Acknowledgements</a></div>
     </div>
     <div id="descContainer" class="flex flex-col justify-start items-start border-l border-l-gray-400 gap-y-8 px-8 py-8 h-[calc(50vh+4rem)] w-[calc(80vw-4rem)] left-[calc(20vw+4rem)] fixed { !showSideSpecies ? 'opacity-0 -z-40' : 'opacity-100 z-0'}">
         <p id="yapContainer" class="text-1xl 2xl:text-2xl text-start w-full">{yapText}</p>
