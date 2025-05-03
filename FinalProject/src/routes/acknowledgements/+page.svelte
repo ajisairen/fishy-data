@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container ml-5 mt-5">
     <h2 class="text-xl font-bold mb-4">Developed By</h2>
     <p class="text-start text-lg mb-8">
         Joel Markley, Connor Pargman, Bradley Johnson, Serena Xin, Corina Conklin
@@ -16,7 +16,7 @@
     </div>
     <div class="mb-8">
         <h2 class="text-xl font-bold mb-4">Fish Images</h2>
-        <p>Iowa, Minnesota, and Wisconsin DNR</p>
+        <p><a class="underline" href="https://www.iowadnr.gov/things-do/fishing/iowa-fish-species">Iowa</a>, <a class="underline" href="https://www.dnr.state.mn.us/fish/index.html">Minnesota</a>, and <a class="underline" href="https://dnr.wisconsin.gov/topic/Fishing/species">Wisconsin</a> DNR</p>
     </div>
     <div class="mb-8">
         <h2 class="text-xl font-bold mb-4">3D Models</h2>
